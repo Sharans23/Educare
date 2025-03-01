@@ -1,0 +1,174 @@
+// // This is your Prisma schema file,
+// // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  sapid       Int      @unique
+  username    String
+  email       String   @unique
+  password    String
+  pfp         String?
+  desc        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt()
+  teams       String[] // Stores references to Team IDs
+  submissions String[] // Stores references to Submission IDs
+}
+
+model Teacher {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  sapid       Int      @unique
+  username    String
+  email       String   @unique
+  password    String
+  pfp         String?
+  desc        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt()
+  teams       String[] // References to Team IDs
+  assignments String[] // References to Assignment IDs
+}
+
+model Team {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  code        String   @unique
+  students    String[] // Stores Student IDs
+  teacher     String // Stores Teacher ID
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt()
+  desc        String?
+  assignments String[] // Stores Assignment IDs
+}
+
+model Assignment {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  team        String // Stores Team ID
+  remarks     String?
+  documents   String? // Stores Document ID
+  deadline    DateTime
+  teacher     String // Stores Teacher ID
+  submissions String[] // Stores Submission IDs
+}
+
+model Document {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  document  String // File URL
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model Submission {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  document   String // Stores Document ID
+  desc       String?
+  student    String // Stores Student ID
+  assignment String // Stores Assignment ID
+  marks      Int?
+  remarks    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt()
+}
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// model Student {
+//   id         String       @id @default(uuid())
+//   sapid      Int          @unique
+//   username   String
+//   email      String
+//   password   String
+//   pfp        String?
+//   // interest String[]
+//   desc       String?
+//   createdAt  DateTime     @default(now())
+//   updatedAt  DateTime     @updatedAt()
+//   Team       Team[]
+//   Submission Submission[]
+// }
+
+// model Teacher {
+//   id         String       @id @default(uuid())
+//   sapid      Int          @unique
+//   username   String
+//   email      String
+//   password   String
+//   pfp        String?
+//   desc       String?
+//   createdAt  DateTime     @default(now())
+//   updatedAt  DateTime     @updatedAt()
+//   Team       Team[]
+//   Assignment Assignment[]
+// }
+
+// model Team {
+//   id         String       @id @default(uuid())
+//   name       String
+//   code       String       @unique
+//   students   Student      @relation(fields: [studentId], references: [id])
+//   teachers   Teacher      @relation(fields: [teacherId], references: [id])
+//   createdAt  DateTime     @default(now())
+//   updatedAt  DateTime     @updatedAt()
+//   desc       String?
+//   studentId  String
+//   teacherId  String
+//   Assignment Assignment[]
+// }
+
+// model Assignment {
+//   id         String       @id @default(uuid())
+//   name       String
+//   team       Team         @relation(fields: [teamId], references: [id])
+//   remarks    String?
+//   documents  Document     @relation(fields: [documentId], references: [id])
+//   deadline   DateTime
+//   teacher    Teacher      @relation(fields: [teacherId], references: [id])
+//   teamId     String
+//   documentId String
+//   teacherId  String
+//   Submission Submission[]
+// }
+
+// model Document {
+//   id         String       @id @default(uuid())
+//   document   String
+//   createdAt  DateTime     @default(now())
+//   updatedAt  DateTime     @updatedAt()
+//   Assignment Assignment[]
+//   Submission Submission[]
+// }
+
+// model Submission {
+//   id           String     @id @default(uuid())
+//   document     Document   @relation(fields: [documentId], references: [id])
+//   desc         String?
+//   student      Student    @relation(fields: [studentId], references: [id])
+//   assignment   Assignment @relation(fields: [assignmentId], references: [id])
+//   marks        Int?
+//   remarks      String?
+//   createdAt    DateTime   @default(now())
+//   updatedAt    DateTime   @updatedAt()
+//   documentId   String
+//   studentId    String
+//   assignmentId String
+// }
