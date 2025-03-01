@@ -34,6 +34,7 @@ import CreateAssgn from "./CreateAssgn";
 // Context Providers
 import { EmailProvider } from "./EmailContext";
 import { UsernameProvider } from "./UsernameContext";
+import StudentTeams from "./StudentTeams";
 
 // MUI Theme Overrides
 const theme = createTheme({
@@ -84,6 +85,10 @@ function App() {
                 <Route
                   path="/QuestionPaperGenerator"
                   element={<QuestionPaperGenerator />}
+                />
+                <Route
+                  path="/StudentTeams"
+                  element={<StudentTeams />}
                 />
                 <Route
                   path="/QuestionPaperGen2"

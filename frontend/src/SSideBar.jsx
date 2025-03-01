@@ -125,6 +125,38 @@ function SideBar() {
               </Typography>
             </Button>
           </li>
+          <li>
+            <Button
+              onClick={() =>
+                handleButtonClick(
+                  "StudentTeams",
+                  "/StudentTeams"
+                )
+              }
+              style={{
+                backgroundColor: "#1e1e1e",
+                color: "#000",
+                width: "80%",
+                padding: "8px",
+                textAlign: "left",
+                marginLeft: "1px",
+                justifyContent: "flex-start",
+                paddingLeft: "5%",
+              }}
+            >
+              <img src={progress} style={{ width: "20px", marginTop: "3px" }} />
+              <Typography
+                style={{
+                  fontSize: "110%",
+                  marginLeft: "15px",
+                  textTransform: "none",
+                  color: "#fff",
+                }}
+              >
+           Teams
+              </Typography>
+            </Button>
+          </li>
           {/* <li>
                         <Button onClick={() => handleButtonClick('scoperecommendations',"/scoperecommendations")} style={{ backgroundColor: '#1e1e1e', color: '#000', width: '80%', padding: '8px', textAlign: 'left', marginLeft: '1px',justifyContent:'flex-start',paddingLeft:'5%' }}>
                                 <img src={quiz} style={{ width: '20px', marginTop: '3px' }} alt="Review Icon" />
