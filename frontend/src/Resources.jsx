@@ -1,13 +1,10 @@
 import React, {useState} from "react";
 import { Button, Card, CardContent, Typography,Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-// import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid';
 import SSideBar from "./SSideBar";
 import AddIcon from '@mui/icons-material/Add';
 import Swal from "sweetalert2";
 import axios from "axios";
-// import Grid2 from '@mui/material/Grid2';
-// // or
-import { Grid2 } from '@mui/material';
 
 function Resources() {
 
@@ -49,9 +46,9 @@ function Resources() {
     
     return(
 
-        <div style={{ minHeight:'600px',overflowY: 'auto',height:'auto' }}>
+        <div style={{ overflowY: 'auto', marginLeft:'-150px', marginTop:'-30px' }}>
             <CardContent style={{padding:'0px'}}>
-            <Grid container>
+            < div style={{display:"flex"}}>
                 <Card style={{width:'20%',minHeight:'800px',overflowY: 'auto',height:'auto',backgroundColor:'#1e1e1e',borderRadius:'15px',margin:'15px'}}>
                 <Grid item >
                     <SSideBar />
@@ -91,7 +88,7 @@ function Resources() {
 
                 </Grid>
                 
-            </Grid>
+            </div>
             </CardContent>
         </div>
     );

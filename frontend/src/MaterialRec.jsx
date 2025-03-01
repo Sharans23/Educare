@@ -33,9 +33,9 @@ function Recommendations() {
   };
 
   return (
-    <div style={{ overflowY: 'auto' }}>
-      <CardContent style={{padding:'0px'}}>
-        <Grid container>
+     <div style={{ overflowY: 'auto', marginLeft:'-150px', marginTop:'-30px' }}>
+                <CardContent style={{padding:'0px'}}>
+                < div style={{display:"flex"}}>
           <Card style={{width:'20%',minHeight:'800px',overflowY: 'auto',height:'auto',backgroundColor: '#1e1e1e',borderRadius:'15px',margin:'15px'}}>
             <Grid item>
               <SSideBar />
@@ -85,7 +85,7 @@ function Recommendations() {
               </Grid>
             </Grid>
           
-        </Grid>
+        </div>
       </CardContent>
     </div>
   );

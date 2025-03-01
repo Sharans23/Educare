@@ -46,9 +46,9 @@ function AddMaterial() {
     };
 
     return (
-        <div style={{ minHeight: '600px', overflowY: 'auto', height: 'auto' }}>
-            <CardContent style={{ padding: '0px' }}>
-                <Grid container>
+         <div style={{ overflowY: 'auto', marginLeft:'-150px', marginTop:'-30px' }}>
+                    <CardContent style={{padding:'0px'}}>
+                    < div style={{display:"flex"}}>
                     <Card style={{ width: '20%', minHeight: '800px', overflowY: 'auto', height: 'auto', backgroundColor: '#1e1e1e', borderRadius: '15px', margin: '15px' }}>
                         <Grid item>
                             <TSideBar />
@@ -88,7 +88,7 @@ function AddMaterial() {
                             </TableContainer>
                         </Card>
                     </Grid>
-                </Grid>
+                </div>
             </CardContent>
         </div>
     );
