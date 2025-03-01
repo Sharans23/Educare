@@ -101,7 +101,7 @@ export const getUserSubmissionForAssignment = async (req, res) => {
 
     const submission = await prisma.submission.findFirst({
       where: { studentId: userId, assignmentId },
-      include: { student: true, assignment: true },
+      include: { student: true, assignment: true, documents:true},
     });
 
     if (!submission) {
