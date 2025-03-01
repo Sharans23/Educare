@@ -20,6 +20,8 @@ import ScopeReco from "./ScopeRec";
 import Recommendations from "./MaterialRec";
 import Resources from "./Resources";
 import Dashboard from "./Sashboard";
+import Teams from "./Teams";
+import CreateAssgn from "./CreateAssgn";
 
 function App() {
   return (
@@ -52,6 +54,8 @@ function App() {
                   <Route path="/loginStudent" element={<LoginStudent />} />
                   <Route path="/signupStudent" element={<SignUpStudent />} />
                   <Route path="/student-dashboard" element={<Dashboard />} />
+                  <Route path="/createassgn" element={<CreateAssgn />} />
+                  <Route path="/teams" element={<Teams />} />
                   <Route path="/" element={<Home />} />
                 </Routes>
               </Router>
