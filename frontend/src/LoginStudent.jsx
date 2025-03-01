@@ -5,10 +5,11 @@ import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
 import fontcolorTheme from "./fontColorTheme";
-import { Button, Typography, FormControl, FormLabel, Input, Select, MenuItem,Link } from "@mui/material";
+import { Button, Typography, FormControl, FormLabel, Input, Select, MenuItem } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import logo from "./images/educare.png";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import UsernameContext from './UsernameContext';
 import login from "./images/login.png";
 
@@ -16,69 +17,40 @@ import login from "./images/login.png";
 function LoginStudent() {
 
     const [password, setPassword] = useState('');
-
-
-    const [error, setError] = useState(null);
-    
-    const { username, setUsername } = useContext(UsernameContext);
+    const [sapid, setSapid] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async (event) => {
         event.preventDefault();
-    
+
+        const loginData = {
+            sapid: Number(sapid),
+            password: password
+        };
+
         try {
-          // Send login request to server
-          const response = await axios.post('http://localhost:5000/user/login', {
-            username,
-            password,
-          });
-    
-      
-          const userData = response.data;
-    
+            const response = await axios.post("http://localhost:5000/student/login", loginData, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            console.log("Login Successful:", response.data);
+
+            // Store token in localStorage
+            localStorage.setItem("token", response.data.token);
+
+            // Show success message
+            alert("Login Successful!");
+
+            // Redirect to teacher dashboard
+            navigate("/teacherDashboard");
 
         } catch (error) {
-         
-          setError(error.response.data.message);
+            console.error("Login Failed:", error.response ? error.response.data : error.message);
+            alert("Login Failed. Please try again.");
         }
-      };
-  
-      const handlePasswordChange = (event) => {
-        setPassword(event.target.value)
-      };
-
-      const handleUsernameChange = (event) => {
-        setUsername(event.target.value)
-      };
-
-   
-
-    // const handleLogin = (event) => {
-    //     event.preventDefault();
-
-    //     const loginData = {
-          
-    //         password: password,
-    //         email: email,
-           
-
-    //     };
-
-    //     const requestData = JSON.stringify(loginData);
-
-    //     axios.post(`http://localhost:5000/user/login`, requestData, {
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         }
-    //     })
-    //         .then(response => {
-                
-    //             console.log(response.data);
-               
-    //         })
-    //         .catch(error => {
-    //             console.error(error);
-    //         });
-    // };
+    };
     
 
     return (
@@ -104,12 +76,12 @@ function LoginStudent() {
                         {/* First Column */}
                         <Grid item xs={12} style={{marginRight:'50px'}}>
                         <FormControl sx={{ mb:'20px' }}>
-                            <FormLabel sx={{ textAlign: "left" }}>Username</FormLabel>
+                            <FormLabel sx={{ textAlign: "left" }}>SapID</FormLabel>
                                 <Input
-                                    name="username"
+                                    name="sapid"
                                     type="text"
-                                    placeholder="Enter username"
-                                    onChange={handleUsernameChange}
+                                    placeholder="Enter your sapid"
+                                    o  onChange={(e) => setSapid(e.target.value)}
                                     sx={{ backgroundColor: '#f0f0f0', width: '130%' , padding:'5px'}}
                                 />
                             </FormControl>
@@ -123,8 +95,8 @@ function LoginStudent() {
                                 <Input
                                     name="password"
                                     type="password"
-                                    placeholder="Enter password"
-                                    onChange={handlePasswordChange}
+                                    placeholder="Enter your password"
+                                    onChange={(e) => setPassword(e.target.value)}
                                     sx={{ backgroundColor: '#f0f0f0', width: '130%' , padding:'5px'}}
                                 />
                             </FormControl>
@@ -132,15 +104,15 @@ function LoginStudent() {
                     </Grid>
 
                             <Link href="/studentDashboard">
-                            <Button  sx={{ mt: 3, backgroundColor:'#ffc700', color:'#000', padding:'10px',paddingLeft:'30px',paddingRight:'30px',mb: 3}}>Login</Button>
+                            <Button onClick={handleLogin}  sx={{ mt: 3, backgroundColor:'#ffc700', color:'#000', padding:'10px',paddingLeft:'30px',paddingRight:'30px',mb: 3}}>Login</Button>
                             </Link>
                             <Typography fontSize="body2" sx={{ alignSelf: 'center' }}>
                                 Don't have an account?
-                                <Link href="/signupStudent" style={{color:'#000', textDecorationColor:'#ffc700', marginLeft:'10px'}}>Sign Up</Link>
+                                <Link to="/signupStudent" style={{color:'#000', textDecorationColor:'#ffc700', marginLeft:'10px'}}>Sign Up</Link>
                             </Typography>
                             <Typography fontSize="body2" sx={{ alignSelf: 'center' }}>
                                 Go back to Home Page
-                                <Link href="/" style={{color:'#000', textDecorationColor:'#ffc700', marginLeft:'10px'}}>Home</Link>
+                                <Link to="/" style={{color:'#000', textDecorationColor:'#ffc700', marginLeft:'10px'}}>Home</Link>
                             </Typography>
                             </Box>
             </Container>
