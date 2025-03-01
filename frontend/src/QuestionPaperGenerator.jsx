@@ -9,9 +9,9 @@ import FolderIcon from '@mui/icons-material/Folder';
 
 const FolderCard = ({ name, onClick }) => (
   <Card
-    onClick={()=>{onClick}}
+    onClick={onClick}
     style={{
-      margin:"10px",
+      margin:"30px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -22,8 +22,8 @@ const FolderCard = ({ name, onClick }) => (
       padding: "20px",
       borderRadius: "10px",
       cursor: "pointer",
-      width: "140px",
-      height: "140px",
+      width: "200px",
+      height: "200px",
       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     }}
   >
@@ -51,7 +51,6 @@ function QuestionPaperGenerator() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setQuestionPapers(response.data || []);
-      console.log(response.data)
     } catch (error) {
       console.error("Error fetching question papers:", error);
     }
