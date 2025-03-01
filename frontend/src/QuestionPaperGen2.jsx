@@ -5,8 +5,9 @@ import Swal from "sweetalert2";
 import EmailContext from "./EmailContext";
 import TSideBar from "./TSideBar";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { gemini_api } from '../secrets.js';
 
-const API_KEY = "AIzaSyBPbigdbFxpvc9vISE2jvhJpu1r_RTxlqs";
+const API_KEY = gemini_api;
 
 function QuestionPaperGen() {
     const [uploadedFiles, setUploadedFiles] = useState([]);
