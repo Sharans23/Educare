@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -30,6 +30,7 @@ export default function Tashboard() {
     const [activeTab, setActiveTab] = useState("overview");
     const [selectedTeam, setSelectedTeam] = useState(null);
     const [selectedAssignment, setSelectedAssignment] = useState(null);
+    
   
     return (
       <div style={{ overflowY: 'auto' }}>
@@ -77,7 +78,7 @@ export default function Tashboard() {
   
               {/* Rendering Components */}
               {activeTab === "teams" && !selectedTeam && <TeamsTab onViewTeam={setSelectedTeam} />}
-              {selectedTeam && !selectedAssignment && <CreateAssgn onOpenAssignment={setSelectedAssignment} />}
+              {selectedTeam && !selectedAssignment && <CreateAssgn idTeam={selectedTeam.id}  onOpenAssignment={setSelectedAssignment} />}
               {selectedAssignment && <AssignmentDetails assignment={selectedAssignment} onBack={() => setSelectedAssignment(null)} />}
             </main>
           </Grid>
@@ -87,42 +88,81 @@ export default function Tashboard() {
   }
   
 
-function TeamsTab({ onViewTeam }) {
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">My Teams</h2>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {studentData.teams.map((team) => (
-          <div key={team.id} className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className="px-4 py-4 sm:px-4">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">{team.name}</h3>
+  function TeamsTab({ onViewTeam }) {
+    const [teams, setTeams] = useState([]);
+    const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    
+      fetch("http://localhost:5000/team/teacher", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Pass token in Authorization header
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setTeams(data.teams); // Assuming response structure is { teams: [...] }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching teams:", error);
+          setLoading(false);
+        });
+    }, []);
+    
+  
+    if (loading) {
+      return <p>Loading teams...</p>;
+    }
+    const handleViewTeam = (team) => {
+      console.log("Selected Team:", team); // Log the selected team object
+      onViewTeam(team);
+    };
+    
+    return (
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">My Teams</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {teams.map((team) => (
+            <div key={team.id} className="bg-white shadow overflow-hidden sm:rounded-lg">
+              <div className="px-4 py-4 sm:px-4">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">{team.name}</h3>
+                <p className="text-sm text-gray-500">{team.desc}</p>
+              </div>
+              <div className="border-t border-gray-200 px-4 py-4 sm:px-4">
+                <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+                  <div className="sm:col-span-1">
+                    <dt className="text-sm font-medium text-gray-500">Code</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{team.code}</dd>
+                  </div>
+                  <div className="sm:col-span-1">
+                    <dt className="text-sm font-medium text-gray-500">Created At</dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      {new Date(team.createdAt).toLocaleDateString()}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+              <div className="bg-gray-50 px-4 py-4 sm:px-4">
+                <button
+                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 rounded-md cursor-pointer"
+                  onClick={() => handleViewTeam(team)}
+
+                >
+                  View Team
+                </button>
+              </div>
             </div>
-            <div className="border-t border-gray-200 px-4 py-4 sm:px-4">
-              <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-                <div className="sm:col-span-1">
-                  <dt className="text-sm font-medium text-gray-500">Members</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{team.members}</dd>
-                </div>
-                <div className="sm:col-span-1">
-                  <dt className="text-sm font-medium text-gray-500">Last Active</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{team.lastActive}</dd>
-                </div>
-              </dl>
-            </div>
-            <div className="bg-gray-50 px-4 py-4 sm:px-4">
-              <button
-                className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 rounded-md cursor-pointer"
-                onClick={() => onViewTeam(team)}
-              >
-                View Team
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+  
+
 
 
 //_________________________________
