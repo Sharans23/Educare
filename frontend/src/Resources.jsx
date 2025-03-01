@@ -1,10 +1,13 @@
 import React, {useState} from "react";
 import { Button, Card, CardContent, Typography,Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import Grid from '@mui/material/Grid';
+// import Grid from '@mui/material/Grid';
 import SSideBar from "./SSideBar";
 import AddIcon from '@mui/icons-material/Add';
 import Swal from "sweetalert2";
 import axios from "axios";
+// import Grid2 from '@mui/material/Grid2';
+// // or
+import { Grid2 } from '@mui/material';
 
 function Resources() {
 
