@@ -61,22 +61,33 @@ function QuestionPaperGenerator() {
       Swal.fire("Error", "Folder name is required.", "error");
       return;
     }
-
+  
     try {
       const response = await axios.post(
         "http://localhost:5000/questionGeneration/create",
         { name: folderName },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-
-      if (response.data?.questionGeneration?.id) {
+  
+      console.log("API Response:", response.data); // Debugging
+  
+      const questionGenerationId = response.data?.questionGeneration?.id;
+      
+      if (questionGenerationId) {
+        localStorage.setItem("questionGenerationId", questionGenerationId);
         Swal.fire("Success", "Question paper created successfully!", "success");
-        fetchQuestionPapers(); // Refresh the list
+  
+        fetchQuestionPapers(); // Refresh list
+        navigate("/QuestionPaperGen2");
+      } else {
+        Swal.fire("Error", "Invalid response data.", "error");
       }
     } catch (error) {
+      console.error("Error creating question paper:", error);
       Swal.fire("Error", "Failed to create question paper.", "error");
     }
   };
+  
 
   return (
     <div style={{ overflowY: "auto", marginLeft: "-150px", marginTop: "-30px" }}>
@@ -93,7 +104,7 @@ function QuestionPaperGenerator() {
             
             {/* Folder Name Input */}
             <TextField
-              sx={{ marginBottom: "30px" }}
+              sx={{ marginRight: "30px" }}
               id="outlined-basic"
               label="Folder Name"
               variant="outlined"

@@ -6,10 +6,12 @@ import EmailContext from "./EmailContext";
 import TSideBar from "./TSideBar";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { gemini_api } from '../secrets.js';
+import { useNavigate } from "react-router-dom";
 
 const API_KEY = gemini_api;
 
 function QuestionPaperGen() {
+    const navigate = useNavigate();
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [generatedQuestions, setGeneratedQuestions] = useState("");
     const [folderName, setFolderName] = useState("");
@@ -177,6 +179,7 @@ function QuestionPaperGen() {
 
             if (response.ok) {
                 Swal.fire("Success", "Files, folder name, and questions saved successfully!", "success");
+                navigate("/QuestionPaperGenerator")
             } else {
                 throw new Error(result.message || "Failed to save generated questions.");
             }
