@@ -51,7 +51,7 @@ function Teams() {
     
         try {
             const token = localStorage.getItem("token"); // Get token from local storage if needed
-            const response = await axios.post(`${render_url}/create`, teamData, {
+            const response = await axios.post(`${render_url}/team/create`, teamData, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`, 
