@@ -49,6 +49,16 @@ function TSideBar() {
                         <Button onClick={() => handleButtonClick('addmaterial',"/QuestionPaperGen2")} style={{ backgroundColor: '#1e1e1e', color: '#000', width: '80%', padding: '8px', textAlign: 'left', marginLeft: '1px',justifyContent:'flex-start',paddingLeft:'5%' }}>
                                 <img src={doc} style={{ width: '20px', marginTop: '3px' }} alt="Review Icon" />
                                 <Typography style={{ fontSize: '110%', marginLeft: '15px', textAlign: 'left',textTransform: 'none',color:'#fff' }}>Question Generator</Typography>
+                                </Button>
+                        <Button onClick={() => handleButtonClick('teams',"/teams")} style={{ backgroundColor: '#1e1e1e', color: '#000', width: '80%', padding: '8px', textAlign: 'left', marginLeft: '1px',justifyContent:'flex-start',paddingLeft:'5%' }}>
+                                <img src={doc} style={{ width: '20px', marginTop: '3px' }} alt="Review Icon" />
+                                <Typography style={{ fontSize: '110%', marginLeft: '15px', textAlign: 'left',textTransform: 'none',color:'#fff' }}>Teams</Typography>
+                        </Button>
+                    </li>
+                    <li>
+                        <Button onClick={() => handleButtonClick('assgn',"/createassgn")} style={{ backgroundColor: '#1e1e1e', color: '#000', width: '80%', padding: '8px', textAlign: 'left', marginLeft: '1px',justifyContent:'flex-start',paddingLeft:'5%' }}>
+                                <img src={doc} style={{ width: '20px', marginTop: '3px' }} alt="Review Icon" />
+                                <Typography style={{ fontSize: '110%', marginLeft: '15px', textAlign: 'left',textTransform: 'none',color:'#fff' }}>Create Assgn</Typography>
                         </Button>
                     </li>
                 </ul>

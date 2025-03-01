@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
 import { ThemeProvider } from "@emotion/react";
 import fontcolorTheme from "./fontColorTheme";
 import TeacherDashboard from "./TeacherDashboard";
@@ -12,8 +12,8 @@ import SignUpStudent from "./SignUpStudent";
 import Home from "./Home";
 import StudentDashboard from "./StudentDashboard";
 import AddMaterial from "./AddMaterial";
-import Quiz from "./Quiz"
-import { EmailProvider } from './EmailContext';
+import Quiz from "./Quiz";
+import { EmailProvider } from "./EmailContext";
 import { UsernameProvider } from "./UsernameContext";
 import OtherComponent from "./OtherComponent";
 import ScopeReco from "./ScopeRec";
@@ -22,10 +22,11 @@ import Resources from "./Resources";
 import QuestionPaperGenerator from "./QuestionPaperGenerator";
 import QuestionPaperGen2 from "./QuestionPaperGen2";
 
+import Dashboard from "./Sashboard";
+import Teams from "./Teams";
+import CreateAssgn from "./CreateAssgn";
 
 function App() {
-
- 
   return (
     <div className="App">
       <div>
@@ -48,6 +49,8 @@ function App() {
             <Route path="/signupStudent" element={<SignUpStudent/>} />
             <Route path="/QuestionPaperGenerator" element={<QuestionPaperGenerator />} />
             <Route path="/QuestionPaperGen2" element={<QuestionPaperGen2 />} />
+            <Route path="/createassgn" element={<CreateAssgn />} />
+                  <Route path="/teams" element={<Teams />} />
             <Route path="/" element={<Home />} />
           </Routes>
         </Router>
