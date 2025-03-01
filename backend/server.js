@@ -34,3 +34,6 @@ app.use('/team',teamRoutes)
 
 import assignmentRoutes from './modules/assignment/assignmentRoute.js';
 app.use('/assignment',assignmentRoutes)
+
+import submissionRoutes from './modules/submission/submissionRoute.js';
+app.use('/submission',submissionRoutes);
