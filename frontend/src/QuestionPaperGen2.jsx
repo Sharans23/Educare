@@ -6,7 +6,7 @@ import EmailContext from "./EmailContext";
 import TSideBar from "./TSideBar";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const API_KEY = "AIzaSyBPbigdbFxpvc9vISE2jvhJpu1r_RTxlqs"; // 🔥 Replace this with your Gemini API key
+const API_KEY = "AIzaSyBPbigdbFxpvc9vISE2jvhJpu1r_RTxlqs";
 
 function QuestionPaperGen() {
     const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -17,46 +17,56 @@ function QuestionPaperGen() {
 
     const handleUpload = async (event) => {
         const file = event.target.files[0];
-        if (file) {
-            const currentDate = new Date();
-            const newFile = {
-                name: file.name,
-                date: currentDate.toLocaleDateString(),
-                time: currentDate.toLocaleTimeString(),
-                type: file.type
-            };
+        if (!file) return;
 
-            setUploadedFiles([...uploadedFiles, newFile]);
-            processFile(file);
+        const questionGenerationId = localStorage.getItem("questionGenerationId");
+        if (!questionGenerationId) {
+            Swal.fire("Error", "No questionGenerationId found in local storage.", "error");
+            return;
         }
-    };
 
-    const processFile = async (file) => {
+        const formData = new FormData();
+        formData.append("documents", file);
+        formData.append("questionGenerationId", questionGenerationId);
+
         try {
-            // Convert file (PDF or Image) to Base64
-            const base64String = await convertToBase64(file);
-            sendToGemini(base64String, file.type);
+            const response = await fetch("http://localhost:5000/document/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                const uploadedFile = {
+                    name: file.name,
+                    file, // Store the file object for processing later
+                    url: result.documents[0].document,
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString(),
+                    type: file.type,
+                };
+
+                setUploadedFiles([...uploadedFiles, uploadedFile]);
+
+                Swal.fire("Success", "File uploaded successfully!", "success");
+            } else {
+                throw new Error(result.message || "Failed to upload file.");
+            }
         } catch (error) {
-            console.error("Failed to process file", error);
-            Swal.fire("Error", "Failed to process the file.", "error");
+            console.error("File upload error:", error);
+            Swal.fire("Error", error.message, "error");
         }
     };
 
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                const base64String = reader.result.split(",")[1]; // Remove prefix
-                resolve(base64String);
-            };
-            reader.onerror = (error) => reject(error);
-        });
-    };
+    const generateQuestionPaper = async () => {
+        if (uploadedFiles.length === 0) {
+            Swal.fire("Error", "No files uploaded. Please upload a file first.", "error");
+            return;
+        }
 
-    const sendToGemini = async (base64String, mimeType) => {
         try {
-            const genAI = new GoogleGenerativeAI("AIzaSyBPbigdbFxpvc9vISE2jvhJpu1r_RTxlqs");
+            const genAI = new GoogleGenerativeAI(API_KEY);
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
             const prompt = `
@@ -73,26 +83,51 @@ function QuestionPaperGen() {
                 If the document or image is not relevant for question generation, return an empty object.
             `;
 
-            const result = await model.generateContent([
-                { inlineData: { data: base64String, mimeType } },
-                prompt,
-            ]);
+            let allQuestions = [];
 
-            const response = await result.response;
-            const text = response.text();
-            const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
+            for (const fileData of uploadedFiles) {
+                const base64String = await convertToBase64(fileData.file);
 
-            try {
-                const data = JSON.parse(cleanedText);
-                setGeneratedQuestions(JSON.stringify(data, null, 2)); // Pretty-print JSON
-            } catch (parseError) {
-                console.error("Error parsing JSON response:", parseError);
-                Swal.fire("Error", "Invalid response format from AI.", "error");
+                const result = await model.generateContent([
+                    { inlineData: { data: base64String, mimeType: fileData.type } },
+                    prompt,
+                ]);
+
+                const response = await result.response;
+                const text = response.text();
+                const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
+
+                try {
+                    const data = JSON.parse(cleanedText);
+                    if (data.questions) {
+                        allQuestions = [...allQuestions, ...data.questions];
+                    }
+                } catch (parseError) {
+                    console.error("Error parsing JSON response:", parseError);
+                    Swal.fire("Error", "Invalid response format from AI.", "error");
+                    return;
+                }
             }
+
+            setGeneratedQuestions(JSON.stringify({ questions: allQuestions }, null, 2));
+
+            Swal.fire("Success", "Question paper generated successfully!", "success");
         } catch (error) {
             console.error("Error generating questions", error);
             Swal.fire("Error", "Failed to generate questions. Try again later.", "error");
         }
+    };
+
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                const base64String = reader.result.split(",")[1]; // Remove prefix
+                resolve(base64String);
+            };
+            reader.onerror = (error) => reject(error);
+        });
     };
 
     return (
@@ -106,13 +141,7 @@ function QuestionPaperGen() {
                     </Card>
                     <Grid item style={{ width: "78%", minHeight: "800px", overflowY: "auto", backgroundColor: "#F5F6FA" }}>
                         <Typography style={{ fontSize: "210%", fontWeight: 700, margin: "20px 30px 30px" }}>Question Paper Generator</Typography>
-                        <TextField
-                            id="outlined-basic"
-                            label="Folder Name"
-                            variant="outlined"
-                            value={folderName}
-                            onChange={(e) => setFolderName(e.target.value)}
-                        />
+                        
 
                         <div style={{ display: "flex", justifyContent: "space-around" }}>
                             <Button component="label" style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}>
@@ -120,73 +149,94 @@ function QuestionPaperGen() {
                                 <AddIcon />
                                 <input type="file" accept=".pdf, .jpg, .jpeg, .png" onChange={handleUpload} style={{ display: "none" }} />
                             </Button>
-                            <Button
-                                onClick={() => {
-                                    if (!folderName) {
-                                        Swal.fire("Error", "Please enter a folder name before saving.", "error");
-                                        return;
-                                    }
-
-                                    localStorage.setItem("folderName", folderName);
-                                    localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
-                                    localStorage.setItem("generatedQuestions", generatedQuestions);
-
-                                    Swal.fire("Success", "Files, folder name, and questions saved successfully!", "success");
-                                }}
-                                style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}
-                            >           <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>save</Typography>
+                            <Button onClick={generateQuestionPaper} style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}>
+                                <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>Generate QP</Typography>
                                 <AddIcon />
                             </Button>
+                            <Button
+    onClick={async () => {
+       
+
+        try {
+            const questionGenerationId = localStorage.getItem("questionGenerationId");
+            if (!questionGenerationId) {
+                Swal.fire("Error", "No questionGenerationId found in local storage.", "error");
+                return;
+            }
+
+            const response = await fetch(`http://localhost:5000/questionGeneration/output/${questionGenerationId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ output: generatedQuestions }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                Swal.fire("Success", "Files, folder name, and questions saved successfully!", "success");
+            } else {
+                throw new Error(result.message || "Failed to save generated questions.");
+            }
+        } catch (error) {
+            console.error("Error saving generated questions:", error);
+            Swal.fire("Error", error.message, "error");
+        }
+    }}
+    style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}
+>
+    <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>Save</Typography>
+    <AddIcon />
+</Button>
+
                         </div>
-                        {generatedQuestions && (
-                            <Card style={{ marginTop: "20px", padding: "15px" }}>
-                                <Typography variant="h6" style={{ marginBottom: "10px" }}>
-                                    Generated Question Paper:
-                                </Typography>
-                                {(() => {
-                                    try {
-                                        const data = JSON.parse(generatedQuestions);
-                                        if (!data.questions || data.questions.length === 0) {
-                                            return <Typography>No valid questions generated.</Typography>;
-                                        }
-                                        return data.questions.map((q, index) => (
-                                            <div key={index} style={{ marginBottom: "15px", padding: "10px", borderBottom: "1px solid #ddd" }}>
-                                                <Typography variant="subtitle1" style={{ fontWeight: "bold" }}>
-                                                    {index + 1}. {q.question}
-                                                </Typography>
-                                                <ul style={{ paddingLeft: "20px" }}>
-                                                    {q.options.map((option, idx) => (
+
+                        {generatedQuestions ? (
+                                          <Card style={{ marginTop: "20px", padding: "15px" }}>
+                                            <Typography variant="h6" style={{ marginBottom: "10px" }}>
+                                              Generated Question Paper:
+                                            </Typography>
+                                            {(() => {
+                                              try {
+                                                const data = JSON.parse(generatedQuestions);
+                                                if (!data.questions || data.questions.length === 0) {
+                                                  return <Typography>No valid questions generated.</Typography>;
+                                                }
+                                                return data.questions.map((q, index) => (
+                                                  <div key={index} style={{ marginBottom: "15px", padding: "10px", borderBottom: "1px solid #ddd" }}>
+                                                    <Typography variant="subtitle1" style={{ fontWeight: "bold" }}>
+                                                      {index + 1}. {q.question}
+                                                    </Typography>
+                                                    <ul style={{ paddingLeft: "20px" }}>
+                                                      {q.options.map((option, idx) => (
                                                         <li key={idx} style={{ listStyleType: "none" }}>
-                                                            <Typography
-                                                                style={{
-                                                                    backgroundColor: option === q.answer ? "#d4edda" : "transparent",
-                                                                    padding: "5px",
-                                                                    borderRadius: "5px",
-                                                                }}
-                                                            >
-                                                                {option}
-                                                            </Typography>
+                                                          <Typography
+                                                            style={{
+                                                              backgroundColor: option === q.answer ? "#d4edda" : "transparent",
+                                                              padding: "5px",
+                                                              borderRadius: "5px",
+                                                            }}
+                                                          >
+                                                            {option}
+                                                          </Typography>
                                                         </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        ));
-                                    } catch (error) {
-                                        console.error("Error parsing questions:", error);
-                                        return <Typography>Error displaying questions.</Typography>;
-                                    }
-                                })()}
-                            </Card>
-                        )}
-
+                                                      ))}
+                                                    </ul>
+                                                  </div>
+                                                ));
+                                              } catch (error) {
+                                                console.error("Error parsing questions:", error);
+                                                return <Typography>Error displaying questions.</Typography>;
+                                              }
+                                            })()}
+                                          </Card>
+                                        ) : (
+                                          <Typography>No questions generated.</Typography>
+                                        )}
                     </Grid>
-
                 </div>
             </CardContent>
-            <Button component="label" style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}>
-                <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>save</Typography>
-                <AddIcon />
-            </Button>
         </div>
     );
 }
