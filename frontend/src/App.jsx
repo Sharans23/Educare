@@ -1,13 +1,58 @@
-import React from "react";
-import { Button } from "@mui/material";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
+import './App.css';
+import { ThemeProvider } from "@emotion/react";
+import fontcolorTheme from "./fontColorTheme";
+import TeacherDashboard from "./TeacherDashboard";
+import AddStudents from "./AddStudents";
+import { Navigate } from "react-router-dom";
+import LoginStudent from "./LoginStudent";
+import LoginTeacher from "./LoginTeacher";
+import SignUpTeacher from "./SignUpTeacher";
+import SignUpStudent from "./SignUpStudent";
+import Home from "./Home";
+import StudentDashboard from "./StudentDashboard";
+import AddMaterial from "./AddMaterial";
+import Quiz from "./Quiz"
+import { EmailProvider } from './EmailContext';
+import { UsernameProvider } from "./UsernameContext";
+import OtherComponent from "./OtherComponent";
+import ScopeReco from "./ScopeRec";
+import Recommendations from "./MaterialRec";
+import Resources from "./Resources";
 
-const App = () => {
+
+function App() {
+
+ 
   return (
-    <div>
-      <Button>Hello</Button>
-      <div className="text-5xl text-red-800 bg-amber-700 p-6">App</div>
+    <div className="App">
+      
+       <ThemeProvider theme={fontcolorTheme}>
+        <UsernameProvider>
+       <EmailProvider>
+         <Router> 
+          <Routes>
+            <Route path="/scoperecommendations" element={<ScopeReco />} /> 
+            <Route path="/materialrecommendations" element={<Recommendations/>} /> 
+            <Route path="/teacherDashboard" element={<TeacherDashboard />} />
+            <Route path="/studentDashboard" element={<StudentDashboard />} />
+            <Route path="/addstudents" element={<AddStudents />} />
+            <Route path="/addmaterial" element={<AddMaterial/>} />
+            <Route path="/quiz" element={<Quiz/>} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/loginTeacher" element={<LoginTeacher/>} />
+            <Route path="/signupTeacher" element={<SignUpTeacher/>} />
+            <Route path="/loginStudent" element={<LoginStudent/>} />
+            <Route path="/signupStudent" element={<SignUpStudent/>} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </Router>
+        </EmailProvider>
+        </UsernameProvider>
+        </ThemeProvider>
+        
     </div>
   );
-};
+}
 
 export default App;
