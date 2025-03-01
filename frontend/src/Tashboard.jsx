@@ -27,48 +27,65 @@ const studentData = {
 };
 
 export default function Tashboard() {
-  const [activeTab, setActiveTab] = useState("overview");
-  const [selectedTeam, setSelectedTeam] = useState(null);
-
-  return (
-    <div style={{ overflowY: 'auto', marginLeft:'-150px', marginTop:'-30px' }}>
-      {/* Sidebar */}
-      <div style={{ display: "flex" }}>
-      <Card style={{ width: '20%', minHeight: '800px', overflowY: 'auto', height: 'auto', backgroundColor: '#1e1e1e', borderRadius: '15px', margin: '15px' }}>
-      <Grid item>
-        <TSideBar />
-    </Grid>
-      </Card>
-
-      {/* Main content */}
-      <Grid item style={{ width: "78%", minHeight: "800px", backgroundColor: "#F5F6FA" }}>
-        {/* Header */}
-        <header className=" shadow">
-          <div className="w-full px-4 py-4 flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900">Student Dashboard</h1>
-            <div className="flex items-center">
-              <button className="mr-4 p-1 rounded-full text-gray-400 hover:text-gray-500">
-                <BellIcon className="h-6 w-6" />
-              </button>
-              <img className="h-8 w-8 rounded-full" src={studentData.avatar} alt="Profile" />
-            </div>
-          </div>
-        </header>
-
-        {/* Main content */}
-        <main className="w-full px-4 py-4">
-          
-
-          {activeTab === "teams" && !selectedTeam && <TeamsTab onViewTeam={setSelectedTeam} />}
-          {selectedTeam && <CreateAssgn />} {/* Show CreateAssgn when a team is selected */}
-        </main>
-        </Grid>
+    const [activeTab, setActiveTab] = useState("overview");
+    const [selectedTeam, setSelectedTeam] = useState(null);
+    const [selectedAssignment, setSelectedAssignment] = useState(null);
+  
+    return (
+      <div style={{ overflowY: 'auto', marginLeft: '-150px', marginTop: '-30px' }}>
+        {/* Sidebar */}
+        <div style={{ display: "flex" }}>
+          <Card style={{ width: '20%', minHeight: '800px', overflowY: 'auto', backgroundColor: '#1e1e1e', borderRadius: '15px', margin: '15px' }}>
+            <Grid item>
+              <TSideBar />
+            </Grid>
+          </Card>
+  
+          {/* Main Content */}
+          <Grid item style={{ width: "78%", minHeight: "800px", backgroundColor: "#F5F6FA" }}>
+            {/* Header */}
+            <header className="shadow">
+              <div className="w-full px-4 py-4 flex justify-between items-center">
+                <h1 className="text-3xl font-bold text-gray-900">Student Dashboard</h1>
+                <div className="flex items-center">
+                  <button className="mr-4 p-1 rounded-full text-gray-400 hover:text-gray-500">
+                    <BellIcon className="h-6 w-6" />
+                  </button>
+                  <img className="h-8 w-8 rounded-full" src={studentData.avatar} alt="Profile" />
+                </div>
+              </div>
+            </header>
+  
+            {/* Navigation Tabs */}
+            <main className="w-full px-4 py-4">
+              <nav className="flex space-x-4 mb-4">
+                <button
+                  onClick={() => {
+                    if (selectedAssignment) {
+                      setSelectedAssignment(null); // Go back to assignment list
+                    } else if (selectedTeam) {
+                      setSelectedTeam(null); // Go back to teams list
+                    } else {
+                      setActiveTab("teams");
+                    }
+                  }}
+                  className="px-3 py-2 rounded-md text-sm font-medium bg-blue-500 text-white"
+                >
+                  {selectedAssignment ? "Back to Assignments" : selectedTeam ? "Back to Teams" : "Teams"}
+                </button>
+              </nav>
+  
+              {/* Rendering Components */}
+              {activeTab === "teams" && !selectedTeam && <TeamsTab onViewTeam={setSelectedTeam} />}
+              {selectedTeam && !selectedAssignment && <CreateAssgn onOpenAssignment={setSelectedAssignment} />}
+              {selectedAssignment && <AssignmentDetails assignment={selectedAssignment} onBack={() => setSelectedAssignment(null)} />}
+            </main>
+          </Grid>
         </div>
       </div>
-
- 
-  );
-}
+    );
+  }
+  
 
 function TeamsTab({ onViewTeam }) {
   return (
@@ -107,6 +124,8 @@ function TeamsTab({ onViewTeam }) {
   );
 }
 
+
+//_________________________________
 
 // import { useState } from "react";
 // import {
