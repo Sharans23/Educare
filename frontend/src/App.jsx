@@ -21,7 +21,7 @@ import Recommendations from "./MaterialRec";
 import Resources from "./Resources";
 import QuestionPaperGenerator from "./QuestionPaperGenerator";
 import QuestionPaperGen2 from "./QuestionPaperGen2";
-
+import Video from './Video'
 import Dashboard from "./Sashboard";
 import Tashboard from "./Tashboard";
 import Teams from "./Teams";
