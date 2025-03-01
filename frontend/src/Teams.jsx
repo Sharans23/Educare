@@ -6,6 +6,8 @@ import AddIcon from "@mui/icons-material/Add";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Swal from "sweetalert2";
 import TSideBar from "./TSideBar";
+import axios from "axios";
+import {render_url} from "../secrets.js";
 
 function Teams() {
     const [open, setOpen] = useState(false);
@@ -13,7 +15,7 @@ function Teams() {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [teamName, setTeamName] = useState("");
     const [teamDescription, setTeamDescription] = useState("");
-
+    
     // Function to generate a random team code
     const generateTeamCode = () => {
         return Math.random().toString(36).substring(2, 10).toUpperCase(); // 8-character code
@@ -31,8 +33,7 @@ function Teams() {
         });
     };
 
-    // Function to handle final team creation
-    const handleCreateTeam = () => {
+    const handleCreateTeam = async () => {
         if (!teamName.trim() || !teamDescription.trim()) {
             Swal.fire({
                 icon: "error",
@@ -41,21 +42,47 @@ function Teams() {
             });
             return;
         }
+    
+        const teamData = {
+            name: teamName,
+            code: teamCode,
+            desc: teamDescription
+        };
+    
+        try {
+            const token = localStorage.getItem("token"); // Get token from local storage if needed
+            const response = await axios.post(`${render_url}/create`, teamData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, 
+                }
+            });
 
-        Swal.fire({
-            icon: "success",
-            title: "Team Created!",
-            text: `Team "${teamName}" has been successfully created with code: ${teamCode}`,
-            timer: 2500,
-            showConfirmButton: false,
-        });
-
-        // Reset Fields
-        setTeamName("");
-        setTeamDescription("");
-        setTeamCode("");
-        setShowCreateForm(false);
+            console.log(teamData);
+    
+            Swal.fire({
+                icon: "success",
+                title: "Team Created!",
+                text: `Team "${teamName}" has been successfully created with code: ${teamCode}`,
+                timer: 2500,
+                showConfirmButton: false,
+            });
+    
+            // Reset Fields
+            setTeamName("");
+            setTeamDescription("");
+            setTeamCode("");
+            setShowCreateForm(false);
+        } catch (error) {
+            console.error("Team Creation Failed:", error.response ? error.response.data : error.message);
+            Swal.fire({
+                icon: "error",
+                title: "Team Creation Failed",
+                text: error.response?.data?.message || "Something went wrong. Please try again.",
+            });
+        }
     };
+    
 
     return (
         <div style={{ overflowY: "auto", marginLeft: "-150px", marginTop: "-30px" }}>
@@ -113,6 +140,7 @@ function Teams() {
                                 marginLeft: "40px",
                                 marginBottom: "30px",
                                 padding: "8px",
+                                 borderRadius:'25px',
                                 width: "250px",
                             }}
                             onClick={() => setOpen(true)}
@@ -188,6 +216,7 @@ function Teams() {
                                 marginBottom: "30px",
                                 padding: "8px",
                                 width: "250px",
+                                borderRadius:'25px'
                             }}
                             onClick={() => {
                                 setTeamCode(generateTeamCode()); // Generate team code when opening form

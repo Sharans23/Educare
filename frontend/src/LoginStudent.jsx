@@ -44,7 +44,7 @@ function LoginStudent() {
             alert("Login Successful!");
 
             // Redirect to teacher dashboard
-            navigate("/teacherDashboard");
+            navigate("/student-dashboard");
 
         } catch (error) {
             console.error("Login Failed:", error.response ? error.response.data : error.message);

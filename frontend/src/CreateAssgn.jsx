@@ -204,6 +204,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Swal from "sweetalert2";
 import EmailContext from "./EmailContext";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 function CreateAssgn() {
     const [assignments, setAssignments] = useState([]);
@@ -215,12 +216,16 @@ function CreateAssgn() {
     const [deadline, setDeadline] = useState("");
     const { email } = useContext(EmailContext);
 
+const navigate = useNavigate();
     const studentSubmissions = [
         { name: "John Doe", submitted: true, document: "doc1.pdf", time: "2025-02-28 10:00 AM" },
         { name: "Jane Smith", submitted: false, document: "N/A", time: "-" },
         { name: "Alice Johnson", submitted: true, document: "doc2.pdf", time: "2025-02-28 11:30 AM" }
     ];
 
+    const handleMeet = () => {
+        navigate("/video");
+    }
     useEffect(() => {
         const savedAssignments = JSON.parse(localStorage.getItem("assignments")) || [];
         setAssignments(savedAssignments);
@@ -315,7 +320,7 @@ function CreateAssgn() {
                                     style={{ backgroundColor: "#ffc700", color: "#000", display: "flex", marginLeft: "40px", marginBottom: "30px", padding: "8px", width: "200px" }}
                                     onClick={() => setOpen(true)}
                                 >
-                                    <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>Create Meeting</Typography>
+                                    <Typography onClick={handleMeet} style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>Create Meeting</Typography>
                                     <AddIcon />
                                 </Button>
                                </div>
