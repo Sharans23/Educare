@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   BarChart,
@@ -23,7 +21,15 @@ import {
   BellIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import SSideBar from "./SSideBar";
+import SideBar from "./SSideBar";
+import {
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 // Sample data for the dashboard
 const studentData = {
@@ -101,32 +107,28 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
 
   return (
-    <div className="flex mt-[-40px] min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className="w-64 mt-[8px] ml-[-155px] bg-black fixed h-full">
-        <SSideBar />
-      </div>
+      <Card
+        style={{
+          width: "20%",
+          minHeight: "100vh",
+          overflowY: "auto",
+          backgroundColor: "#1e1e1e",
+          borderRadius: "15px",
+          margin: "15px",
+        }}
+      >
+        <Grid item>
+          <SideBar />
+        </Grid>
+      </Card>
 
       {/* Main content */}
-      <div className="flex-1 ml-64">
+      <div className="flex-1">
         {/* Header */}
-        <header className="bg-white shadow">
-          <div className="w-full px-4 py-4 flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">
-              Student Dashboard
-            </h1>
-            <div className="flex items-center">
-              <button className="mr-4 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                <span className="sr-only">View notifications</span>
-                <BellIcon className="h-6 w-6" />
-              </button>
-              <img
-                className="h-8 w-8 rounded-full"
-                src={studentData.avatar || "/placeholder.svg"}
-                alt="Profile"
-              />
-            </div>
-          </div>
+        <header className="mt-[20px] ml-[25px] text-2xl font-bold">
+          Student Dashboard
         </header>
 
         {/* Main content */}
