@@ -21,7 +21,7 @@ import Recommendations from "./MaterialRec";
 import Resources from "./Resources";
 import QuestionPaperGenerator from "./QuestionPaperGenerator";
 import QuestionPaperGen2 from "./QuestionPaperGen2";
-
+import Video from './Video'
 import Dashboard from "./Sashboard";
 import Tashboard from "./Tashboard";
 import Teams from "./Teams";
@@ -58,6 +58,7 @@ function App() {
                   <Route path="/loginStudent" element={<LoginStudent />} />
                   <Route path="/signupStudent" element={<SignUpStudent />} />
                   <Route path="/student-dashboard" element={<Dashboard />} />
+                  <Route path="/video" element={<Video />} />
                   <Route path="/teacher-dashboard" element={<Tashboard />} />
                   <Route path="/createassgn" element={<CreateAssgn />} />
                   <Route path="/QuestionPaperGenerator" element={<QuestionPaperGenerator />} />

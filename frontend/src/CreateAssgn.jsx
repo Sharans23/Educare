@@ -254,7 +254,7 @@ function CreateAssgn() {
     };
 
     return (
-        <div style={{ overflowY: "auto", marginLeft: "-150px", marginTop: "-30px", marginLeft:'0%'}}>
+        <div style={{ overflowY: "auto", marginTop: "-30px", marginLeft:'0%'}}>
             <CardContent style={{ padding: "0px" }}>
                 <div style={{ display: "flex" }}>
                     <Grid item style={{ width: "78%", minHeight: "800px", backgroundColor: "#F5F6FA", marginTop: "40px"}}>

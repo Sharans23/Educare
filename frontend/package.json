@@ -17,6 +17,7 @@
     "@mui/icons-material": "^6.4.6",
     "@mui/material": "^6.4.6",
     "@tailwindcss/vite": "^4.0.9",
+    "@zegocloud/zego-uikit-prebuilt": "^2.14.1",
     "axios": "^1.8.1",
     "pdfjs-dist": "^4.10.38",
     "react": "^19.0.0",
