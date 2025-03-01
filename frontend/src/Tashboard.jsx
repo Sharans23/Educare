@@ -32,7 +32,7 @@ export default function Tashboard() {
     const [selectedAssignment, setSelectedAssignment] = useState(null);
   
     return (
-      <div style={{ overflowY: 'auto', marginLeft: '-150px', marginTop: '-30px' }}>
+      <div style={{ overflowY: 'auto' }}>
         {/* Sidebar */}
         <div style={{ display: "flex" }}>
           <Card style={{ width: '20%', minHeight: '800px', overflowY: 'auto', backgroundColor: '#1e1e1e', borderRadius: '15px', margin: '15px' }}>
