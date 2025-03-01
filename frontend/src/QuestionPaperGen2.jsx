@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Button, Card, CardContent, Typography, Grid } from "@mui/material";
+import { Button, Card, CardContent, Typography, Grid, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 import EmailContext from "./EmailContext";
@@ -11,6 +11,8 @@ const API_KEY = "AIzaSyBPbigdbFxpvc9vISE2jvhJpu1r_RTxlqs"; // 🔥 Replace this 
 function QuestionPaperGen() {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [generatedQuestions, setGeneratedQuestions] = useState("");
+    const [folderName, setFolderName] = useState("");
+
     const { email } = useContext(EmailContext);
 
     const handleUpload = async (event) => {
@@ -104,24 +106,87 @@ function QuestionPaperGen() {
                     </Card>
                     <Grid item style={{ width: "78%", minHeight: "800px", overflowY: "auto", backgroundColor: "#F5F6FA" }}>
                         <Typography style={{ fontSize: "210%", fontWeight: 700, margin: "20px 30px 30px" }}>Question Paper Generator</Typography>
+                        <TextField
+                            id="outlined-basic"
+                            label="Folder Name"
+                            variant="outlined"
+                            value={folderName}
+                            onChange={(e) => setFolderName(e.target.value)}
+                        />
+
                         <div style={{ display: "flex", justifyContent: "space-around" }}>
                             <Button component="label" style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}>
                                 <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>Add Files</Typography>
                                 <AddIcon />
                                 <input type="file" accept=".pdf, .jpg, .jpeg, .png" onChange={handleUpload} style={{ display: "none" }} />
                             </Button>
+                            <Button
+                                onClick={() => {
+                                    if (!folderName) {
+                                        Swal.fire("Error", "Please enter a folder name before saving.", "error");
+                                        return;
+                                    }
+
+                                    localStorage.setItem("folderName", folderName);
+                                    localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+                                    localStorage.setItem("generatedQuestions", generatedQuestions);
+
+                                    Swal.fire("Success", "Files, folder name, and questions saved successfully!", "success");
+                                }}
+                                style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}
+                            >           <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>save</Typography>
+                                <AddIcon />
+                            </Button>
                         </div>
                         {generatedQuestions && (
                             <Card style={{ marginTop: "20px", padding: "15px" }}>
-                                <Typography variant="h6">Generated Question Paper:</Typography>
-                                <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-                                    {generatedQuestions}
-                                </pre>
+                                <Typography variant="h6" style={{ marginBottom: "10px" }}>
+                                    Generated Question Paper:
+                                </Typography>
+                                {(() => {
+                                    try {
+                                        const data = JSON.parse(generatedQuestions);
+                                        if (!data.questions || data.questions.length === 0) {
+                                            return <Typography>No valid questions generated.</Typography>;
+                                        }
+                                        return data.questions.map((q, index) => (
+                                            <div key={index} style={{ marginBottom: "15px", padding: "10px", borderBottom: "1px solid #ddd" }}>
+                                                <Typography variant="subtitle1" style={{ fontWeight: "bold" }}>
+                                                    {index + 1}. {q.question}
+                                                </Typography>
+                                                <ul style={{ paddingLeft: "20px" }}>
+                                                    {q.options.map((option, idx) => (
+                                                        <li key={idx} style={{ listStyleType: "none" }}>
+                                                            <Typography
+                                                                style={{
+                                                                    backgroundColor: option === q.answer ? "#d4edda" : "transparent",
+                                                                    padding: "5px",
+                                                                    borderRadius: "5px",
+                                                                }}
+                                                            >
+                                                                {option}
+                                                            </Typography>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        ));
+                                    } catch (error) {
+                                        console.error("Error parsing questions:", error);
+                                        return <Typography>Error displaying questions.</Typography>;
+                                    }
+                                })()}
                             </Card>
                         )}
+
                     </Grid>
+
                 </div>
             </CardContent>
+            <Button component="label" style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}>
+                <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>save</Typography>
+                <AddIcon />
+            </Button>
         </div>
     );
 }

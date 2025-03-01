@@ -1,114 +1,95 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Card, CardContent, Typography, Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
-import EmailContext from "./EmailContext";
 import TSideBar from "./TSideBar";
-import pdfToText from "react-pdftotext";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const FolderCard = ({ name, onClick }) => (
+  <Card 
+    onClick={onClick} 
+    style={{
+      backgroundColor: "#6D7F9A", color: "#fff", textAlign: "center",
+      padding: "20px", borderRadius: "10px", cursor: "pointer"
+    }}>
+    <Typography variant="h6">{name}</Typography>
+  </Card>
+);
 
 function QuestionPaperGenerator() {
-    const [uploadedFiles, setUploadedFiles] = useState([]);
-    const [generatedQuestions, setGeneratedQuestions] = useState("");
-    const { email } = useContext(EmailContext);
+  const navigate = useNavigate();
+  const [folderName, setFolderName] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [generatedQuestions, setGeneratedQuestions] = useState("");
+  const [selectedFolder, setSelectedFolder] = useState(null);
 
-    const handleUpload = async (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const currentDate = new Date();
-            const newFile = {
-                name: file.name,
-                date: currentDate.toLocaleDateString(),
-                time: currentDate.toLocaleTimeString()
-            };
+  useEffect(() => {
+    const storedFolder = localStorage.getItem("folderName");
+    const storedFiles = localStorage.getItem("uploadedFiles");
+    const storedQuestions = localStorage.getItem("generatedQuestions");
 
-            setUploadedFiles([...uploadedFiles, newFile]);
-            extractText(file);
-        }
-    };
+    if (storedFolder) setFolderName(storedFolder);
+    if (storedFiles) setUploadedFiles(JSON.parse(storedFiles));
+    if (storedQuestions) setGeneratedQuestions(storedQuestions);
+  }, []);
 
-    const extractText = (file) => {
-        pdfToText(file)
-            .then((text) => {
-                console.log("Extracted text:", text);
-                sendToGemini(text);
-            })
-            .catch((error) => console.error("Failed to extract text from PDF", error));
-    };
+  return (
+    <div style={{ overflowY: "auto", marginLeft: "-150px", marginTop: "-30px" }}>
+      
+      <CardContent style={{ padding: "0px" }}>
+        <div style={{ display: "flex" }}>
+          <Card style={{ width: "20%", minHeight: "800px", backgroundColor: "#1e1e1e", borderRadius: "15px", margin: "15px" }}>
+            <Grid item>
+              <TSideBar />
+            </Grid>
+          </Card>
 
-    const sendToGemini = async (text, retries = 3, delay = 2000) => {
-      try {
-          const API_KEY = "YOUR_GEMINI_API_KEY"; // Replace with your actual API key
-          const response = await axios.post(
-              `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBPbigdbFxpvc9vISE2jvhJpu1r_RTxlqs`,
-              {
-                  contents: [
-                      {
-                          parts: [{ text: `Analyze this document and generate structured questions in JSON format:
-                {
-                    "questions": [
-                        {
-                            "question": "string",
-                            "options": ["string", "string", "string", "string"],
-                            "answer": "string"
-                        }
-                    ]
-                }
-                If the document is not relevant for question generation, return an empty object.\n${text}` }]
-                      }
-                  ]
-              },
-              {
-                  headers: {
-                      "Content-Type": "application/json"
-                  }
-              }
-          );
-  
-          // Extract text response
-          const generatedText = response.data.candidates[0]?.content?.parts[0]?.text || "No response from AI.";
-          setGeneratedQuestions(generatedText);
-      } catch (error) {
-          console.error("Error generating questions", error);
-          if (error.response && error.response.status === 503 && retries > 0) {
-              console.log(`Retrying... attempts left: ${retries}`);
-              setTimeout(() => sendToGemini(text, retries - 1, delay * 2), delay);
-          } else {
-              Swal.fire("Error", "Failed to generate questions. Try again later.", "error");
-          }
-      }
-  };
-  
+          <Grid item style={{ width: "78%", minHeight: "800px", backgroundColor: "#F5F6FA" }}>
+            <Typography style={{ fontSize: "210%", fontWeight: 700, margin: "20px 30px 30px" }}>Question Paper Generator</Typography>
+            <Button 
+    style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}
+    onClick={() => navigate("/QuestionPaperGen2")}
+>
+    <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>Add Papers</Typography>
+    <AddIcon />
+</Button>
 
-    return (
-        <div style={{ overflowY: "auto", marginLeft: "-150px", marginTop: "-30px" }}>
-            <CardContent style={{ padding: "0px" }}>
-                <div style={{ display: "flex" }}>
-                    <Card style={{ width: "20%", minHeight: "800px", overflowY: "auto", backgroundColor: "#1e1e1e", borderRadius: "15px", margin: "15px" }}>
-                        <Grid item>
-                            <TSideBar />
-                        </Grid>
-                    </Card>
-                    <Grid item style={{ width: "78%", minHeight: "800px", overflowY: "auto", backgroundColor: "#F5F6FA" }}>
-                        <Typography style={{ fontSize: "210%", fontWeight: 700, margin: "20px 30px 30px" }}>Question Paper Generator</Typography>
-                        <div style={{ display: "flex", justifyContent: "space-around" }}>
-                            <Button component="label" style={{ backgroundColor: "#ffc700", color: "#000", padding: "8px", width: "170px" }}>
-                                <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>Add Papers</Typography>
-                                <AddIcon />
-                                <input type="file" accept="application/pdf" onChange={handleUpload} style={{ display: "none" }} />
-                            </Button>
-                        </div>
-                        {generatedQuestions && (
-                            <Card style={{ marginTop: "20px", padding: "15px" }}>
-                                <Typography variant="h6">Generated Question Paper:</Typography>
-                                <Typography>{generatedQuestions}</Typography>
-                            </Card>
-                        )}
-                    </Grid>
-                </div>
-            </CardContent>
+            {!selectedFolder ? (
+              <Grid container spacing={2}>
+                {folderName && (
+                  <Grid item xs={6} sm={4} md={3}>
+                    <FolderCard name={folderName} onClick={() => setSelectedFolder(folderName)} />
+                  </Grid>
+                )}
+              </Grid>
+            ) : (
+              <Card style={{ padding: "20px", margin: "20px" }}>
+                <Button onClick={() => setSelectedFolder(null)} style={{ backgroundColor: "#ffc700", color: "#000", marginBottom: "10px" }}>Back</Button>
+
+                <Typography variant="h6">Uploaded Files:</Typography>
+                {uploadedFiles.length > 0 ? (
+                  uploadedFiles.map((file, index) => (
+                    <Typography key={index}>📄 {file.name}</Typography>
+                  ))
+                ) : (
+                  <Typography>No files uploaded.</Typography>
+                )}
+
+                <Typography variant="h6" style={{ marginTop: "20px" }}>Generated Questions:</Typography>
+                {generatedQuestions ? (
+                  <pre style={{ backgroundColor: "#eee", padding: "10px", borderRadius: "5px", overflowX: "auto" }}>
+                    {generatedQuestions}
+                  </pre>
+                ) : (
+                  <Typography>No questions generated.</Typography>
+                )}
+              </Card>
+            )}
+          </Grid>
         </div>
-    );
+      </CardContent>
+    </div>
+  );
 }
 
 export default QuestionPaperGenerator;
