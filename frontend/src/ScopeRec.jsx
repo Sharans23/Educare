@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { TextField, Button, Card, CardContent, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import SSideBar from './SSideBar';
+import Sidebar from "./SSideBar";
 
 const genAI = new GoogleGenerativeAI("AIzaSyANwaMYJWvS90eqqBb_yJ3Hij4DLYvol4Q");
 

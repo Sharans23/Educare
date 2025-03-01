@@ -31,3 +31,6 @@ app.use('/questionGeneration',questionGenerationRoutes)
 
 import teamRoutes from './modules/team/teamRoute.js';
 app.use('/team',teamRoutes)
+
+import assignmentRoutes from './modules/assignment/assignmentRoute.js';
+app.use('/assignment',assignmentRoutes)
