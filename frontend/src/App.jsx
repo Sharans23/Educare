@@ -19,6 +19,8 @@ import OtherComponent from "./OtherComponent";
 import ScopeReco from "./ScopeRec";
 import Recommendations from "./MaterialRec";
 import Resources from "./Resources";
+import QuestionPaperGenerator from "./QuestionPaperGenerator";
+import QuestionPaperGen2 from "./QuestionPaperGen2";
 
 
 function App() {
@@ -44,6 +46,8 @@ function App() {
             <Route path="/signupTeacher" element={<SignUpTeacher/>} />
             <Route path="/loginStudent" element={<LoginStudent/>} />
             <Route path="/signupStudent" element={<SignUpStudent/>} />
+            <Route path="/QuestionPaperGenerator" element={<QuestionPaperGenerator />} />
+            <Route path="/QuestionPaperGen2" element={<QuestionPaperGen2 />} />
             <Route path="/" element={<Home />} />
           </Routes>
         </Router>
