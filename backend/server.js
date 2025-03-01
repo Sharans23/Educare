@@ -22,3 +22,9 @@ app.use('/student',studentRoutes)
 
 import teacherRoutes from './modules/teacher/teacherRoute.js'
 app.use('/teacher',teacherRoutes)
+
+import documentRoutes from './modules/document/documentRoute.js'
+app.use('/document',documentRoutes)
+
+import questionGenerationRoutes from './modules/questionGeneration/questionRoute.js'
+app.use('/questionGeneration',questionGenerationRoutes)

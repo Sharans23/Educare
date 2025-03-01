@@ -14,54 +14,59 @@ datasource db {
 }
 
 model Student {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  sapid       Int      @unique
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  sapid       Int          @unique
   username    String
-  email       String   @unique
+  email       String       @unique
   password    String
   pfp         String?
   desc        String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt()
-  teams       String[] // Stores references to Team IDs
-  submissions String[] // Stores references to Submission IDs
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt()
+  Team        Team?        @relation(fields: [teamId], references: [id])
+  teamId      String?      @db.ObjectId
+  submissions Submission[]
 }
 
 model Teacher {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  sapid       Int      @unique
-  username    String
-  email       String   @unique
-  password    String
-  pfp         String?
-  desc        String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt()
-  teams       String[] // References to Team IDs
-  assignments String[] // References to Assignment IDs
+  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
+  sapid               Int                  @unique
+  username            String
+  email               String               @unique
+  password            String
+  pfp                 String?
+  desc                String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt()
+  teams               Team[]
+  assignments         Assignment[]
+  questionGenerations QuestionGeneration[]
 }
 
 model Team {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  code        String   @unique
-  students    String[] // Stores Student IDs
-  teacher     String // Stores Teacher ID
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt()
+  code        String       @unique
+  students    Student[]
+  teacher     Teacher      @relation(fields: [teacherId], references: [id])
+  teacherId   String       @db.ObjectId
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt()
   desc        String?
-  assignments String[] // Stores Assignment IDs
+  assignments Assignment[]
 }
 
 model Assignment {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  team        String // Stores Team ID
-  remarks     String?
-  documents   String? // Stores Document ID
+  team        Team         @relation(fields: [teamId], references: [id])
+  teamId      String       @db.ObjectId
+  desc        String?
+  documents   Document[] // Multiple documents for each assignment
   deadline    DateTime
-  teacher     String // Stores Teacher ID
-  submissions String[] // Stores Submission IDs
+  teacher     Teacher      @relation(fields: [teacherId], references: [id])
+  teacherId   String       @db.ObjectId
+  submissions Submission[]
 }
 
 model Document {
@@ -69,18 +74,38 @@ model Document {
   document  String // File URL
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
+
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id]) // Used for assignments
+  assignmentId String?     @db.ObjectId
+
+  submission   Submission? @relation(fields: [submissionId], references: [id]) // Used for student submissions
+  submissionId String?     @db.ObjectId
+
+  questionGeneration   QuestionGeneration? @relation(fields: [questionGenerationId], references: [id]) // Used for teachers' question uploads
+  questionGenerationId String?             @db.ObjectId
 }
 
 model Submission {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  document   String // Stores Document ID
-  desc       String?
-  student    String // Stores Student ID
-  assignment String // Stores Assignment ID
-  marks      Int?
-  remarks    String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt()
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  student      Student    @relation(fields: [studentId], references: [id])
+  studentId    String     @db.ObjectId
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId String     @db.ObjectId
+  documents    Document[] // Students can upload multiple documents
+  desc         String?
+  marks        Int?
+  remarks      String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt()
+}
+
+model QuestionGeneration {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  teacher   Teacher    @relation(fields: [teacherId], references: [id])
+  teacherId String     @db.ObjectId
+  documents Document[] // Teachers upload multiple documents
+  output    String?
 }
 
 // generator client {
