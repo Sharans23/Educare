@@ -134,7 +134,7 @@ function QuestionPaperGen() {
     };
 
     return (
-        <div style={{ overflowY: "auto", marginLeft: "-150px", marginTop: "-30px" }}>
+        <div style={{ overflowY: "auto" }}>
             <CardContent style={{ padding: "0px" }}>
                 <div style={{ display: "flex" }}>
                     <Card style={{ width: "20%", minHeight: "800px", overflowY: "auto", backgroundColor: "#1e1e1e", borderRadius: "15px", margin: "15px" }}>
@@ -236,7 +236,9 @@ function QuestionPaperGen() {
                                             })()}
                                           </Card>
                                         ) : (
-                                          <Typography>No questions generated.</Typography>
+                                          <Typography style={{paddingTop:'40px',
+                                            textAlign:'center'
+                                          }}>No questions generated.</Typography>
                                         )}
                     </Grid>
                 </div>

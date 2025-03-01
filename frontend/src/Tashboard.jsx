@@ -32,7 +32,7 @@ export default function Tashboard() {
     const [selectedAssignment, setSelectedAssignment] = useState(null);
   
     return (
-      <div style={{ overflowY: 'auto', marginLeft: '-150px', marginTop: '-30px' }}>
+      <div style={{ overflowY: 'auto' }}>
         {/* Sidebar */}
         <div style={{ display: "flex" }}>
           <Card style={{ width: '20%', minHeight: '800px', overflowY: 'auto', backgroundColor: '#1e1e1e', borderRadius: '15px', margin: '15px' }}>
@@ -46,7 +46,7 @@ export default function Tashboard() {
             {/* Header */}
             <header className="shadow">
               <div className="w-full px-4 py-4 flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-900">Student Dashboard</h1>
+                <h1 className="text-3xl font-bold text-gray-900">Teacher Dashboard</h1>
                 <div className="flex items-center">
                   <button className="mr-4 p-1 rounded-full text-gray-400 hover:text-gray-500">
                     <BellIcon className="h-6 w-6" />

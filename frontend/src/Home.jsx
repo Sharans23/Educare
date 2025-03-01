@@ -8,15 +8,16 @@ import { Link } from 'react-router-dom';
 
 function Home() {
     return (
-        <div style={{marginLeft:'-150px', marginTop:'-30px'}}>
+        <div>
         <Box sx={{
+            paddingTop:'5px',
             display: 'flex',
             flexDirection: {
                 xs: 'column',
                 sm: 'column',  // for extra small screens
                 md: 'row',  // for small screens
             },
-            height: '97vh'  // Set height to match the viewport height
+            height: '95vh'  // Set height to match the viewport height
         }}>
             <Container sx={{
                 display: 'flex',
