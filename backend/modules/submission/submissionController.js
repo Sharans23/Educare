@@ -46,7 +46,7 @@ export const getMySubmissions = async (req, res) => {
 
     const submissions = await prisma.submission.findMany({
       where: { studentId },
-      include: { assignment: true },
+      include: { student: true,assignment:true,documents:true  },
     });
 
     res.status(200).json(submissions);
@@ -63,7 +63,7 @@ export const getSubmissionsByAssignment = async (req, res) => {
 
     const submissions = await prisma.submission.findMany({
       where: { assignmentId },
-      include: { student: true },
+      include: { student: true,assignment:true,documents:true },
     });
 
     res.status(200).json(submissions);
