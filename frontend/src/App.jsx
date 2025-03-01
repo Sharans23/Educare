@@ -30,6 +30,7 @@ import Dashboard from "./Sashboard"; // Check if it's a typo
 import Tashboard from "./Tashboard"; // Check if it's a typo
 import Teams from "./Teams";
 import CreateAssgn from "./CreateAssgn";
+import AnswerEvaluator from "./QuestionAnswer";
 
 // Context Providers
 import { EmailProvider } from "./EmailContext";
@@ -90,6 +91,7 @@ function App() {
                   element={<QuestionPaperGen2 />}
                 />
                 <Route path="/teams" element={<Teams />} />
+                <Route path="/qa" element={<AnswerEvaluator />} />
               </Routes>
             </Router>
           </EmailProvider>
