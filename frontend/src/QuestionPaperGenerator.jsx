@@ -5,15 +5,32 @@ import Swal from "sweetalert2";
 import TSideBar from "./TSideBar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import FolderIcon from '@mui/icons-material/Folder';
 
 const FolderCard = ({ name, onClick }) => (
   <Card
-    onClick={onClick}
+    onClick={()=>{onClick}}
     style={{
-      backgroundColor: "#6D7F9A", color: "#fff", textAlign: "center",
-      padding: "20px", borderRadius: "10px", cursor: "pointer"
-    }}>
-    <Typography variant="h6">{name}</Typography>
+      margin:"10px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#fff",
+      color: "#000",
+      textAlign: "center",
+      padding: "20px",
+      borderRadius: "10px",
+      cursor: "pointer",
+      width: "140px",
+      height: "140px",
+      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    }}
+  >
+    <FolderIcon style={{ fontSize: 50, color: "#fbbc04" }} />
+    <Typography variant="body1" style={{ marginTop: "10px", fontWeight: 600 }}>
+      {name}
+    </Typography>
   </Card>
 );
 
@@ -34,6 +51,7 @@ function QuestionPaperGenerator() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setQuestionPapers(response.data || []);
+      console.log(response.data)
     } catch (error) {
       console.error("Error fetching question papers:", error);
     }
