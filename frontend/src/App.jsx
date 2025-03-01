@@ -26,7 +26,7 @@ function App() {
  
   return (
     <div className="App">
-      
+      <div>
        <ThemeProvider theme={fontcolorTheme}>
         <UsernameProvider>
        <EmailProvider>
@@ -50,7 +50,7 @@ function App() {
         </EmailProvider>
         </UsernameProvider>
         </ThemeProvider>
-        
+      </div>
     </div>
   );
 }

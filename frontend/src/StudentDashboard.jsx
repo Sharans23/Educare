@@ -39,7 +39,7 @@ function StudentDashboard() {
     return(
         
 
-        <div style={{ overflowY: 'auto' }}>
+        <div style={{ overflowY: 'auto', marginLeft:'-150px', marginTop:'-30px' }}>
             <CardContent style={{padding:'0px'}}>
             <Grid container>
                 <Card style={{width:'20%',minHeight:'800px',overflowY: 'auto',height:'auto', backgroundColor:'#1e1e1e',borderRadius:'15px',margin:'15px'}}>
@@ -48,7 +48,7 @@ function StudentDashboard() {
                 </Grid>
                 </Card>
                 
-                <Grid item style={{width:'78%',minHeight:'800px',overflowY: 'auto',height:'auto', backgroundColor:'#F5F6FA'}}>
+                <Grid  style={{width:'78%',minHeight:'800px',overflowY: 'auto',height:'auto', backgroundColor:'#F5F6FA'}}>
                 {/* <Nav /> */}
                 <Typography style={{fontSize:'210%',fontWeight:700,marginTop:'20px',textAlign:'left',marginLeft:'30px', marginBottom:'30px'}}>Profile</Typography>
 

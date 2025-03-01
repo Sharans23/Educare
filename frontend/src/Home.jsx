@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 function Home() {
     return (
+        <div style={{marginLeft:'-150px', marginTop:'-30px'}}>
         <Box sx={{
             display: 'flex',
             flexDirection: {
@@ -25,7 +26,7 @@ function Home() {
                 width: {
                     xs: '100%',
                     sm: '100%',
-                    md: '50%'
+                    md: '65%'
                 },
                 height: {
                     xs:'50%',
@@ -42,7 +43,7 @@ function Home() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '100%', // Ensure the container takes up the full width
+                    width: '90%', // Ensure the container takes up the full width
                     height: '100%', // Ensure the container takes up the full height
                     overflow: 'hidden' // Hide any overflow content      
                 }}>
@@ -76,7 +77,7 @@ function Home() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '100%', // Ensure the container takes up the full width
+                    width: '120%', // Ensure the container takes up the full width
                     height: '100%', // Ensure the container takes up the full height
                     overflow: 'hidden' // Hide any overflow content      
                 }}>
@@ -87,6 +88,7 @@ function Home() {
                      </Container>
             </Container>
         </Box>
+        </div>
     );
 };
 
