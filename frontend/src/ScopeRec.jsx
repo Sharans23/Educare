@@ -1,94 +1,132 @@
-import React, { useState, useEffect } from 'react';
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { TextField, Button, Card, CardContent, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import Sidebar from "./SSideBar";
+"use client";
 
-const genAI = new GoogleGenerativeAI("AIzaSyANwaMYJWvS90eqqBb_yJ3Hij4DLYvol4Q");
+import { useState } from "react";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { Card, Grid } from "@mui/material";
+import { Search } from "lucide-react";
+import { gemini_api } from "../secrets.js";
+import SideBar from "./SSideBar.jsx";
+import { TreeVisualization } from "./TreeVisualization.jsx";
+
+const genAI = new GoogleGenerativeAI(gemini_api);
 
 async function generateContent(prompt) {
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
   const result = await model.generateContent(prompt);
-  const response = await result.response;
-  const text = await response.text();
-  return text;
+  return result.response.text();
 }
 
-function ScopeReco() {
-  const [subject, setSubject] = useState('');
-  const [recommendations, setRecommendations] = useState('');
+export default function ScopeRec() {
+  const [subject, setSubject] = useState("");
+  const [recommendations, setRecommendations] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      const generatedContent = await generateContent(`If I want to become ${subject}, how many hours of work should i put in everyday and which subjects and extra curriculars should I focus on. Give the output in a paragraph. Don't make any of the text bold.`);
-      setRecommendations(generatedContent);
-    }
-    if (subject) {
-      fetchData();
-    }
-  }, [subject]);
+  const handleGenerate = async () => {
+    if (!subject) return;
+    setLoading(true);
+    try {
+      const prompt = `Give a detailed learning roadmap for ${subject} in a hierarchical tree structure format. Start with main categories and break them down into subcategories with increasing difficulty levels. Format it with clear numbering (1., 1.1, 1.1.1) and indentation to show the hierarchy. Include 4-5 main categories with relevant subcategories.`;
 
-  const handleSubjectChange = (event) => {
-    setSubject(event.target.value);
+      const generatedContent = await generateContent(prompt);
+      const parsedTree = parseTreeStructure(generatedContent);
+      setRecommendations(parsedTree);
+    } catch (error) {
+      console.error("Error:", error);
+      setRecommendations([
+        { text: "Failed to fetch recommendations. Try again later.", level: 0 },
+      ]);
+    }
+    setLoading(false);
+  };
+
+  const parseTreeStructure = (text) => {
+    const lines = text.split("\n").filter((line) => line.trim() !== "");
+    const treeItems = [];
+
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+
+      if (!trimmedLine) continue;
+
+      let level = 0;
+      let cleanedText = trimmedLine;
+
+      const numberingMatch = trimmedLine.match(/^(\d+\.)+(\d+)?\.?\s+/);
+      if (numberingMatch) {
+        const numbering = numberingMatch[0];
+        level = (numbering.match(/\./g) || []).length;
+        cleanedText = trimmedLine.substring(numbering.length).trim();
+      } else if (trimmedLine.match(/^[\s\t]*[-*•]\s+/)) {
+        const indentMatch = trimmedLine.match(/^([\s\t]*)([-*•])\s+/);
+        if (indentMatch) {
+          level = Math.floor(indentMatch[1].length / 2) + 1;
+          cleanedText = trimmedLine.substring(indentMatch[0].length).trim();
+        }
+      }
+
+      treeItems.push({
+        text: cleanedText,
+        level: level,
+      });
+    }
+
+    return treeItems;
   };
 
   return (
-    <div style={{ overflowY: 'auto' }}>
-      <CardContent style={{padding:'0px'}}>
-        <Grid container>
-          <Card style={{width:'20%',minHeight:'800px',overflowY: 'auto',height:'auto', backgroundColor: '#1e1e1e',borderRadius:'15px',margin:'15px'}}>
-            <Grid item>
-              <SSideBar />
-            </Grid>
-          </Card>
-         
-            <Grid item style={{width:'78%',minHeight:'800px',overflowY: 'auto',height:'auto', backgroundColor:'#F5F6FA'}}>
-              <Typography style={{fontSize:'210%',fontWeight:700,marginTop:'20px',textAlign:'left',marginLeft:'30px', marginBottom:'30px'}}>Scope Recommendations</Typography>
-              <Grid container>
-                <Grid item xs={8}>
-                  <TextField
-                    label="Who do you Aspire to be?"
-                    variant="outlined"
-                    value={subject} 
-                    onChange={handleSubjectChange}
-                    style={{ marginBottom: '20px', marginLeft:'50%',width:'30%' }}
-                  />
-                  <br></br>
-                  <Button variant="contained" onClick={() => setSubject(subject)} style={{marginLeft:'50%',backgroundColor:'#ffc700',color:'#000'}}>
-                    Get Recommendations
-                  </Button>
-                  {recommendations && (
-                    <div style={{ marginTop: '20px', marginLeft: '20px', marginRight: '20px', textAlign: 'left', width: 'calc(90vw - 40px)' }}>
-                      <h2>Generated Content:</h2>
-                      {recommendations.split('.').map((sentence, index) => {
-                        // Split the sentence by words
-                        const words = sentence.split(' ');
-                        return (
-                          <p key={index}>
-                            {words.map((word, wordIndex) => {
-                              // Check if the word has asterisks (*) on both sides
-                              const isBold = word.startsWith('*') && word.endsWith('*');
-                              // Remove asterisks and render the word inside <strong> tag if it's bold
-                              const cleanedWord = word.replace(/\*/g, '');
-                              return (
-                                <React.Fragment key={wordIndex}>
-                                  {isBold ? <strong>{cleanedWord}</strong> : cleanedWord}&nbsp;
-                                </React.Fragment>
-                              );
-                            })}
-                          </p>
-                        );
-                      })}
-                    </div>
-                  )}
-                </Grid>
-              </Grid>
-            </Grid>
-     
+    <div className="flex min-h-screen bg-[#F5F6FA]">
+      <Card
+        style={{
+          width: "20%",
+          minHeight: "800px",
+          overflowY: "auto",
+          backgroundColor: "#1e1e1e",
+          borderRadius: "15px",
+          margin: "15px",
+        }}
+      >
+        <Grid item>
+          <SideBar />
         </Grid>
-      </CardContent>
+      </Card>
+      <div className="flex-1 p-6">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl font-bold mb-6 text-gray-800">
+            Learning Path Generator
+          </h1>
+
+          <div className="relative mb-6">
+            <input
+              type="text"
+              placeholder="Enter a subject (e.g., 'Frontend Development', 'Machine Learning')"
+              className="w-full px-4 py-3 pl-12 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleGenerate()}
+            />
+            <Search
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
+            <button
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-[#ffc700] text-black font-medium rounded-md hover:bg-yellow-500 disabled:opacity-50 transition-colors"
+              onClick={handleGenerate}
+              disabled={loading}
+            >
+              {loading ? "Generating..." : "Generate Path"}
+            </button>
+          </div>
+
+          {recommendations.length > 0 && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                Your Learning Path
+              </h2>
+              <TreeVisualization items={recommendations} />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
-
-export default ScopeReco;

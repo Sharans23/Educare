@@ -43,7 +43,7 @@ function LoginStudent() {
             // Show success message
             alert("Login Successful!");
 
-            // Redirect to teacher dashboard
+            // Redirect to stundent dashboard
             navigate("/student-dashboard");
 
         } catch (error) {
