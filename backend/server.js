@@ -28,3 +28,6 @@ app.use('/document',documentRoutes)
 
 import questionGenerationRoutes from './modules/questionGeneration/questionRoute.js'
 app.use('/questionGeneration',questionGenerationRoutes)
+
+import teamRoutes from './modules/team/teamRoute.js';
+app.use('/team',teamRoutes)
