@@ -84,6 +84,7 @@ function LoginTeacher() {
 
     return (
         <ThemeProvider theme={fontcolorTheme}>
+        <div  style={{marginLeft:'-150px', marginTop:'-25px'}}>
         <Box sx={{ display: 'flex', flexDirection: 'row', height: 'auto' }}>
             {/* Left Container */}
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '40%', height: 'auto', bgcolor: '#1e1e1e', borderRadius:'15px', margin:'12px' }}>
@@ -146,6 +147,7 @@ function LoginTeacher() {
                             </Box>
             </Container>
         </Box>
+        </div>
     </ThemeProvider>
     );
 };
