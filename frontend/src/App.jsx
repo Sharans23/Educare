@@ -30,10 +30,12 @@ import Dashboard from "./Sashboard"; // Check if it's a typo
 import Tashboard from "./Tashboard"; // Check if it's a typo
 import Teams from "./Teams";
 import CreateAssgn from "./CreateAssgn";
+// import Space from './Space.jsx'
 
 // Context Providers
 import { EmailProvider } from "./EmailContext";
 import { UsernameProvider } from "./UsernameContext";
+import Space from "./space";
 import StudentTeams from "./StudentTeams";
 
 // MUI Theme Overrides
@@ -82,6 +84,7 @@ function App() {
                 <Route path="/video" element={<Video />} />
                 <Route path="/teacher-dashboard" element={<Tashboard />} />
                 <Route path="/createassgn" element={<CreateAssgn />} />
+                <Route path="/space" element={<Space />} />
                 <Route
                   path="/QuestionPaperGenerator"
                   element={<QuestionPaperGenerator />}
