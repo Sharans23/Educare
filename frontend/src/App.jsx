@@ -23,33 +23,45 @@ import QuestionPaperGenerator from "./QuestionPaperGenerator";
 import QuestionPaperGen2 from "./QuestionPaperGen2";
 
 import Dashboard from "./Sashboard";
+import Tashboard from "./Tashboard";
 import Teams from "./Teams";
 import CreateAssgn from "./CreateAssgn";
 
 function App() {
   return (
     <div className="App">
-      <div>
-       <ThemeProvider theme={fontcolorTheme}>
-        <UsernameProvider>
-       <EmailProvider>
-         <Router> 
-          <Routes>
-            <Route path="/scoperecommendations" element={<ScopeReco />} /> 
-            <Route path="/materialrecommendations" element={<Recommendations/>} /> 
-            <Route path="/teacherDashboard" element={<TeacherDashboard />} />
-            <Route path="/studentDashboard" element={<StudentDashboard />} />
-            <Route path="/addstudents" element={<AddStudents />} />
-            <Route path="/addmaterial" element={<AddMaterial/>} />
-            <Route path="/quiz" element={<Quiz/>} />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="/loginTeacher" element={<LoginTeacher/>} />
-            <Route path="/signupTeacher" element={<SignUpTeacher/>} />
-            <Route path="/loginStudent" element={<LoginStudent/>} />
-            <Route path="/signupStudent" element={<SignUpStudent/>} />
-            <Route path="/QuestionPaperGenerator" element={<QuestionPaperGenerator />} />
-            <Route path="/QuestionPaperGen2" element={<QuestionPaperGen2 />} />
-            <Route path="/createassgn" element={<CreateAssgn />} />
+  
+        <ThemeProvider theme={fontcolorTheme}>
+          <UsernameProvider>
+            <EmailProvider>
+              <Router>
+                <Routes>
+                  <Route path="/scoperecommendations" element={<ScopeReco />} />
+                  <Route
+                    path="/materialrecommendations"
+                    element={<Recommendations />}
+                  />
+                  <Route
+                    path="/teacherDashboard"
+                    element={<TeacherDashboard />}
+                  />
+                  <Route
+                    path="/studentProfile"
+                    element={<StudentDashboard />}
+                  />
+                  <Route path="/addstudents" element={<AddStudents />} />
+                  <Route path="/addmaterial" element={<AddMaterial />} />
+                  <Route path="/quiz" element={<Quiz />} />
+                  <Route path="/resources" element={<Resources />} />
+                  <Route path="/loginTeacher" element={<LoginTeacher />} />
+                  <Route path="/signupTeacher" element={<SignUpTeacher />} />
+                  <Route path="/loginStudent" element={<LoginStudent />} />
+                  <Route path="/signupStudent" element={<SignUpStudent />} />
+                  <Route path="/student-dashboard" element={<Dashboard />} />
+                  <Route path="/teacher-dashboard" element={<Tashboard />} />
+                  <Route path="/createassgn" element={<CreateAssgn />} />
+                  <Route path="/QuestionPaperGenerator" element={<QuestionPaperGenerator />} />
+                  <Route path="/QuestionPaperGen2" element={<QuestionPaperGen2 />} />
                   <Route path="/teams" element={<Teams />} />
             <Route path="/" element={<Home />} />
           </Routes>
@@ -57,7 +69,6 @@ function App() {
         </EmailProvider>
         </UsernameProvider>
         </ThemeProvider>
-      </div>
     </div>
   );
 }

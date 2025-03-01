@@ -28,7 +28,7 @@ function SSideBar() {
             <nav>
                 <ul style={{ listStyle: 'none', marginTop: '40px' }}>
                     <li>
-                        <Button onClick={() => handleButtonClick('profile',"/studentDashboard")} style={{ backgroundColor:'#1e1e1e', width: '80%',padding: '8px', textAlign: 'left', marginLeft: '1px',justifyContent:'flex-start',paddingLeft:'5%' }}>
+                        <Button onClick={() => handleButtonClick('profile',"/studentProfile")} style={{ backgroundColor:'#1e1e1e', width: '80%',padding: '8px', textAlign: 'left', marginLeft: '1px',justifyContent:'flex-start',paddingLeft:'5%' }}>
                                  <img src={profile} style={{ width: '20px' }} />
                                 <Typography style={{ fontSize: '112%', marginLeft: '15px',textTransform: 'none',color:'#fff'}}>Profile</Typography>
                         </Button>
