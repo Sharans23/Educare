@@ -11,6 +11,7 @@ import quiz from "./images/ideas.png";
 import group from './images/group.png'
 import roadmap from './images/roadmap (1).png'
 import answer from './images/presentation-board.png'
+import meet from "./images/meeting.png";
 
 function SideBar() {
   const [selectedButton, setSelectedButton] = useState("dashboardstudent");
@@ -265,6 +266,12 @@ function SideBar() {
               </Typography>
             </Button>
           </li>
+          <li>
+                        <Button onClick={() => handleButtonClick('create-meet',"/create-meet")} style={{ backgroundColor: '#1e1e1e', color: '#000', width: '80%', padding: '8px', textAlign: 'left', marginLeft: '1px',justifyContent:'flex-start',paddingLeft:'5%' }}>
+                                <img src={meet} style={{ width: '20px', marginTop: '3px' }} alt="Review Icon" />
+                                <Typography style={{ fontSize: '110%', marginLeft: '15px', textAlign: 'left',textTransform: 'none',color:'#fff' }}>Join Meet</Typography>
+                        </Button>
+                    </li>
         </ul>
       </nav>
     </div>

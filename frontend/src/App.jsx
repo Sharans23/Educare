@@ -39,7 +39,6 @@ import { EmailProvider } from "./EmailContext";
 import { UsernameProvider } from "./UsernameContext";
 // import Space from "./space";
 import StudentTeams from "./StudentTeams";
-import Space from "./space";
 
 // MUI Theme Overrides
 const theme = createTheme({
@@ -102,6 +101,7 @@ function App() {
                 />
                 <Route path="/teams" element={<Teams />} />
                 <Route path="/qa" element={<AnswerEvaluator />} />
+                <Route path="/create-meet" element={<Video />} />
               </Routes>
             </Router>
           </EmailProvider>

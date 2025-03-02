@@ -101,9 +101,10 @@ function QuestionPaperGenerator() {
           </Card>
 
           {/* Main Content */}
-          <Grid item style={{ width: "78%", minHeight: "800px", backgroundColor: "#F5F6FA" }}>
+          <Grid item style={{ width: "78%", minHeight: "800px", backgroundColor: "#F5F6FA"}}>
             <Typography style={{ fontSize: "210%", fontWeight: 700, margin: "20px 30px 30px" }}>Question Paper Generator</Typography>
 
+<div style={{ paddingLeft:'30px'}}>
             {/* Folder Name Input */}
             <TextField
               sx={{ marginRight: "30px" }}
@@ -122,7 +123,7 @@ function QuestionPaperGenerator() {
               <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>Create</Typography>
               <AddIcon />
             </Button>
-
+            </div>
             {/* Display Question Paper Sets */}
             {!selectedFolder ? (
               <Grid container spacing={2}>
