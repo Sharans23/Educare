@@ -16,10 +16,20 @@ function TeacherDashboard() {
       const [profileData, setProfileData] = useState(null);
   
       useEffect(() => {
-        console.log("emailll:" ,email);
-          if (email) {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            Swal.fire("Error", "No authentication token found", "error");
+            return;
+        }
+        // console.log("emailll:" ,email);
+        //   if (email) {
               // Fetch profile data from the server using the email
-              axios.get(`http://localhost:5000/teacher/teacherProfile/${email}`)
+              axios.get(`http://localhost:5000/teacher/me`,{
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+              })
                   .then(response => {
                       // Update state with fetched profile data
                       setProfileData(response.data);
@@ -27,8 +37,8 @@ function TeacherDashboard() {
                   .catch(error => {
                       console.error('Error fetching profile data:', error);
                   });
-          }
-      }, [email]);
+        //   }
+      }, []);
 
     
      
@@ -64,12 +74,12 @@ function TeacherDashboard() {
                 <Grid item xs={8}>
                 <Typography style={{textAlign:'left',marginLeft:'50px',marginBottom:'5px',fontWeight:500,color:'#fff'}}>Full Name</Typography>
                 <Card style={{marginBottom:'30px', padding:'10px', marginLeft:'40px',marginRight:'40px',borderRadius:'5px',textAlign:'left',paddingLeft:'15px',backgroundColor:'#D3D3D3'}}>
-                <Typography>{profileData && profileData.fullname}</Typography>
+                <Typography>{profileData && profileData.username}</Typography>
                 </Card>
 
                <Typography style={{textAlign:'left',marginLeft:'50px',marginBottom:'5px',fontWeight:500,color:'#fff'}}>Teacher ID</Typography> 
                 <Card style={{marginBottom:'30px', padding:'10px', marginLeft:'40px',marginRight:'40px',borderRadius:'5px',backgroundColor:'#D3D3D3',textAlign:'left',paddingLeft:'15px'}}>
-                <Typography>{profileData && profileData.exp}</Typography>
+                <Typography>{profileData && profileData.sapid}</Typography>
                 </Card>
                 </Grid>
                 </Grid>
