@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Card, Grid } from "@mui/material";
 import { Search } from "lucide-react";
 import { gemini_api } from "../secrets.js";
-import SideBar from "./SSideBar.jsx";
+import SideBar from "./SSidebar.jsx";
 import { TreeVisualization } from "./TreeVisualization.jsx";
 
 const genAI = new GoogleGenerativeAI(gemini_api);

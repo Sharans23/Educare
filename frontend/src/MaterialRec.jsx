@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { TextField, Button, Card, CardContent, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { gemini_api } from '../secrets.js';
-import SideBar from "./SSideBar.jsx";
+import SideBar from "./SSidebar.jsx";
 
 
 

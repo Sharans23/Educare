@@ -14,7 +14,7 @@ import questionsAnswers from "./data.json";
 import physics from "./images/1.png";
 import chemistry from "./images/2.png";
 import biology from "./images/3.png";
-import SideBar from "./SSideBar"; // Ensure the correct filename
+import SideBar from "./SSidebar"; // Ensure the correct filename
 
 function Quiz() {
   const [uploadedFiles, setUploadedFiles] = useState([]);

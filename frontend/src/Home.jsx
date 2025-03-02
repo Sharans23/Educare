@@ -12,6 +12,8 @@ function Home() {
         <Box sx={{
             paddingTop:'5px',
             display: 'flex',
+            marginTop:'10px',
+            marginLeft:'10px',
             flexDirection: {
                 xs: 'column',
                 sm: 'column',  // for extra small screens
@@ -27,7 +29,7 @@ function Home() {
                 width: {
                     xs: '100%',
                     sm: '100%',
-                    md: '65%'
+                    md: '45%'
                 },
                 height: {
                     xs:'50%',
@@ -36,7 +38,8 @@ function Home() {
                 },
                 bgcolor: '#1e1e1e' , // corrected color name
                 borderRadius:'15px',
-                margin:'10px'
+                margin:'10px',
+                marginLeft:'30px'
             }}>
                 
                 <Container sx={{
@@ -44,11 +47,11 @@ function Home() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '90%', // Ensure the container takes up the full width
-                    height: '100%', // Ensure the container takes up the full height
-                    overflow: 'hidden' // Hide any overflow content      
+                    width: '80%', // Ensure the container takes up the full width
+                    height: '100%', 
+                    overflow: 'hidden'    
                 }}>
-                    <img src={teacher} style={{ maxWidth: '85%', maxHeight: '80%', objectFit: 'contain',marginBottom:'20px',width:'62%' }} />
+                    <img src={teacher} style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain',marginBottom:'20px',width:'62%' }} />
                     <Link to="/loginTeacher" style={{ textDecoration: 'none' }}>
                         <Button variant="contained" style={{padding:'20px',paddingTop:'7px',paddingBottom:'7px'}} sx={{ bgcolor: '#ffc700',maxWidth: { md:'90%',sm:'60%',xs:'60%'} }}><Typography style={{fontWeight:600,fontSize:'105%',color:'#000'}}>TEACHER</Typography></Button>
                     </Link>   
@@ -82,7 +85,7 @@ function Home() {
                     height: '100%', // Ensure the container takes up the full height
                     overflow: 'hidden' // Hide any overflow content      
                 }}>
-                    <img src={student} style={{ maxWidth: '85%', maxHeight: '80%', objectFit: 'contain',marginBottom:'40px',marginTop:'20px',width:'63%' }}/>
+                    <img src={student} style={{ maxWidth: '70%', maxHeight: '80%', objectFit: 'contain',marginBottom:'40px',marginTop:'20px',width:'43%' }}/>
                     <Link to="/loginStudent" style={{ textDecoration: 'none' }}> 
                         <Button variant="contained" style={{padding:'20px',paddingTop:'7px',paddingBottom:'7px'}} sx={{ bgcolor: '#ffc700', maxWidth: { md:'100%',sm:'50%',xs:'50%'} }}><Typography style={{fontWeight:600,fontSize:'105%',color:'#000'}}>STUDENT</Typography></Button>
                     </Link>                  

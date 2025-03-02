@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import pdfToText from "react-pdftotext";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { gemini_api } from "../secrets.js";
-import SideBar from "./SSideBar.jsx";
+import SideBar from "./SSidebar.jsx";
 import {
   TextField,
   Button,

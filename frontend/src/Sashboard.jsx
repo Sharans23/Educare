@@ -21,7 +21,7 @@ import {
   BellIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import SideBar from "./SSideBar";
+import SideBar from "./SSidebar";
 import {
   TextField,
   Button,
