@@ -204,10 +204,10 @@ function StudentTeams() {
                                                         <dt className="text-sm font-medium text-gray-500">Team Code</dt>
                                                         <dd className="mt-1 text-sm text-gray-900">{team.code}</dd>
                                                     </div>
-                                                    <div className="sm:col-span-1">
+                                                    {/* <div className="sm:col-span-1">
                                                         <dt className="text-sm font-medium text-gray-500">Members</dt>
-                                                        <dd className="mt-1 text-sm text-gray-900">{team.students.length || 0}</dd>
-                                                    </div>
+                                                        <dd className="mt-1 text-sm text-gray-900">{(team && team.students.length) || 0}</dd>
+                                                    </div> */}
                                                 </dl>
                                             </div>
                                             <div className="bg-gray-50 px-4 py-4 sm:px-4">
