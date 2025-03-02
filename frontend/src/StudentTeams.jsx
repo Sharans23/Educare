@@ -4,7 +4,9 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
-import SideBar from "./SSidebar";
+import TSideBar from "./TSideBar";
+import SideBar from "./SSideBar";
+
 
 function StudentTeams() {
     const [open, setOpen] = useState(false);

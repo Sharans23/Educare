@@ -6,12 +6,14 @@ import TSideBar from "./TSideBar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import FolderIcon from '@mui/icons-material/Folder';
+import { IconButton } from "@mui/material";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 const FolderCard = ({ name, onClick }) => (
   <Card
     onClick={onClick}
     style={{
-      margin:"30px",
+      margin: "30px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -61,22 +63,22 @@ function QuestionPaperGenerator() {
       Swal.fire("Error", "Folder name is required.", "error");
       return;
     }
-  
+
     try {
       const response = await axios.post(
         "http://localhost:5000/questionGeneration/create",
         { name: folderName },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-  
+
       console.log("API Response:", response.data); // Debugging
-  
+
       const questionGenerationId = response.data?.questionGeneration?.id;
-      
+
       if (questionGenerationId) {
         localStorage.setItem("questionGenerationId", questionGenerationId);
         Swal.fire("Success", "Question paper created successfully!", "success");
-  
+
         fetchQuestionPapers(); // Refresh list
         navigate("/QuestionPaperGen2");
       } else {
@@ -87,10 +89,10 @@ function QuestionPaperGenerator() {
       Swal.fire("Error", "Failed to create question paper.", "error");
     }
   };
-  
+
 
   return (
-    <div style={{ overflowY: "auto",  }}>
+    <div style={{ overflowY: "auto", }}>
       <CardContent style={{ padding: "0px" }}>
         <div style={{ display: "flex" }}>
           {/* Sidebar */}
@@ -101,7 +103,7 @@ function QuestionPaperGenerator() {
           {/* Main Content */}
           <Grid item style={{ width: "78%", minHeight: "800px", backgroundColor: "#F5F6FA" }}>
             <Typography style={{ fontSize: "210%", fontWeight: 700, margin: "20px 30px 30px" }}>Question Paper Generator</Typography>
-            
+
             {/* Folder Name Input */}
             <TextField
               sx={{ marginRight: "30px" }}
@@ -137,17 +139,30 @@ function QuestionPaperGenerator() {
                 {/* Display Uploaded Documents */}
                 <Typography variant="h6">Uploaded Files:</Typography>
                 {selectedFolder.documents.length > 0 ? (
-                  selectedFolder.documents.map((doc) => (
-                    <Typography key={doc.id}>
-                      📄 <a href={doc.document} target="_blank" rel="noopener noreferrer">{doc.document}</a>
-                    </Typography>
-                  ))
+                  <Grid container style={{ display: "flex", justifyContent: "space-around" }} spacing={2} >
+                    {selectedFolder.documents.map((doc) => (
+                      <Grid item key={doc.id}>
+                        <IconButton
+                          component="a"
+                          href={doc.document}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{ color: "#ffc700" }}
+                        >
+                          <InsertDriveFileIcon fontSize="large" />
+                        </IconButton>
+                        <Typography variant="body2" align="center">
+                          {doc.document.split("/").pop()} {/* Extracts filename */}
+                        </Typography>
+                      </Grid>
+                    ))}
+                  </Grid>
                 ) : (
                   <Typography>No files uploaded.</Typography>
                 )}
 
                 {/* Display Generated Questions */}
-                <Typography variant="h6" style={{ marginTop: "20px" }}>Generated Questions:</Typography>
+
                 {selectedFolder.output ? (
                   <Card style={{ marginTop: "20px", padding: "15px" }}>
                     <Typography variant="h6" style={{ marginBottom: "10px" }}>
