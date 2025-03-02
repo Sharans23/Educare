@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Button, Card, CardContent, Typography, Grid, Dialog, DialogTitle, DialogContent, DialogActions, TextField
 } from "@mui/material";
@@ -8,55 +8,86 @@ import Swal from "sweetalert2";
 import TSideBar from "./TSideBar";
 import SideBar from "./SSideBar";
 
+
 function StudentTeams() {
     const [open, setOpen] = useState(false);
     const [teamCode, setTeamCode] = useState("");
-    const [showCreateForm, setShowCreateForm] = useState(false);
-    const [teamName, setTeamName] = useState("");
-    const [teamDescription, setTeamDescription] = useState("");
+    const [teams, setTeams] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    // Function to generate a random team code
-    const generateTeamCode = () => {
-        return Math.random().toString(36).substring(2, 10).toUpperCase(); // 8-character code
-    };
-
-    // Function to copy code to clipboard
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText(teamCode);
-        Swal.fire({
-            icon: "success",
-            title: "Copied!",
-            text: `Team Code: ${teamCode} copied to clipboard.`,
-            timer: 2000,
-            showConfirmButton: false,
-        });
-    };
-
-    // Function to handle final team creation
-    const handleCreateTeam = () => {
-        if (!teamName.trim() || !teamDescription.trim()) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops!",
-                text: "Please fill in all fields before creating the team.",
-            });
+    const handleJoinTeam = async () => {
+        if (!teamCode.trim()) {
+            setError("Team code is required");
             return;
         }
+        const token = localStorage.getItem("token"); // Ensure token is stored in local storage
+        if (!token) throw new Error("No auth token found");
 
-        Swal.fire({
-            icon: "success",
-            title: "Team Created!",
-            text: `Team "${teamName}" has been successfully created with code: ${teamCode}`,
-            timer: 2500,
-            showConfirmButton: false,
-        });
+        setLoading(true);
+        setError("");
 
-        // Reset Fields
-        setTeamName("");
-        setTeamDescription("");
-        setTeamCode("");
-        setShowCreateForm(false);
+        try {
+            const response = await fetch("http:localhost:5000/team/join", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ code: teamCode }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to join the team");
+            }
+
+            alert("Successfully joined the team!");
+            setOpen(false);
+            setTeamCode(""); // Reset input field
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
+
+    // Function to fetch teams from API
+    const fetchTeams = async () => {
+        try {
+            const token = localStorage.getItem("token"); // Ensure token is stored in local storage
+            if (!token) throw new Error("No auth token found");
+
+            const response = await fetch("http:localhost:5000/team/student", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    // "Content-Type": "application/json"
+                }
+            });
+
+            if (!response.ok) throw new Error("Failed to fetch teams");
+
+            const data = await response.json();
+            console.log(data)
+            setTeams(data.teams || []);
+        } catch (error) {
+            console.error("Error fetching teams:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Failed to load teams",
+                text: error.message,
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Fetch teams on component mount
+    useEffect(() => {
+        fetchTeams();
+    }, []);
 
     return (
         <div style={{ overflowY: "auto", marginLeft: "-150px", marginTop: "-30px" }}>
@@ -101,7 +132,7 @@ function StudentTeams() {
                             Teams
                         </Typography>
 
-                        {/* Generate Team Code Button */}
+                        {/* Join Team Button */}
                         <Button
                             name="banner"
                             component="label"
@@ -124,48 +155,34 @@ function StudentTeams() {
                             <AddIcon />
                         </Button>
 
-                        {/* Team Code Modal */}
+                        {/* Team Code Dialog */}
                         <Dialog open={open} onClose={() => setOpen(false)}>
                             <DialogTitle>Join Team Using Code</DialogTitle>
                             <DialogContent>
                                 <Typography style={{ marginBottom: "10px" }}>
-                                   Enter the Code to Join team
+                                    Enter the Code to Join the team
                                 </Typography>
 
-                                {/* Team Code Field */}
                                 <TextField
                                     fullWidth
                                     value={teamCode}
-                                    placeholder="Click 'Join' to Join the team"
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
+                                    placeholder="Enter team code"
+                                    onChange={(e) => setTeamCode(e.target.value)}
+                                    error={!!error}
+                                    helperText={error}
                                     style={{ marginBottom: "10px" }}
                                 />
 
-                                {/* Generate Team Code Button */}
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     fullWidth
-                                    onClick={() => setTeamCode(generateTeamCode())}
+                                    onClick={handleJoinTeam}
+                                    disabled={loading}
                                     style={{ marginBottom: "10px" }}
                                 >
-                                    Join Team
+                                    {loading ? "Joining..." : "Join Team"}
                                 </Button>
-
-                                {/* Copy Button (only visible when code is generated) */}
-                                {teamCode && (
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        fullWidth
-                                        startIcon={<ContentCopyIcon />}
-                                        onClick={copyToClipboard}
-                                    >
-                                        Copy Code
-                                    </Button>
-                                )}
                             </DialogContent>
 
                             <DialogActions>
@@ -175,80 +192,47 @@ function StudentTeams() {
                             </DialogActions>
                         </Dialog>
 
-                        {/* Create Team Button */}
-                        <Button
-                            name="createTeam"
-                            component="label"
-                            className="buttonText1"
-                            style={{
-                                backgroundColor: "#ffc700",
-                                color: "#000",
-                                display: "flex",
-                                alignItems: "center",
-                                marginLeft: "40px",
-                                marginBottom: "30px",
-                                padding: "8px",
-                                width: "250px",
-                            }}
-                            onClick={() => {
-                                setTeamCode(generateTeamCode()); // Generate team code when opening form
-                                setShowCreateForm(true);
-                            }}
-                        >
-                            <Typography style={{ fontWeight: 600, marginRight: "10px", fontSize: "105%" }}>
-                                Create Team
-                            </Typography>
-                            <AddIcon />
-                        </Button>
-
-                        {/* Team Creation Form (Shown After Clicking "Create Team") */}
-                        {showCreateForm && (
-                            <Card
-                                style={{
-                                    margin: "20px 40px",
-                                    padding: "20px",
-                                    borderRadius: "5px",
-                                    backgroundColor: "#fff",
-                                }}
-                            >
-                                <Typography variant="h6" style={{ marginBottom: "10px" }}>
-                                    Enter Team Details
-                                </Typography>
-
-                                {/* Team Name Field */}
-                                <TextField
-                                    label="Team Name"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={teamName}
-                                    onChange={(e) => setTeamName(e.target.value)}
-                                    style={{ marginBottom: "15px" }}
-                                />
-
-                                {/* Team Description Field */}
-                                <TextField
-                                    label="Team Description"
-                                    variant="outlined"
-                                    fullWidth
-                                    multiline
-                                    rows={3}
-                                    value={teamDescription}
-                                    onChange={(e) => setTeamDescription(e.target.value)}
-                                    style={{ marginBottom: "15px" }}
-                                />
-
-                                {/* Unique Team Code Field */}
-                                <TextField
-                                    label="Team Code"
-                                    variant="outlined"
-                                    fullWidth
-                                    
-                                    style={{ marginBottom: "15px" }}
-                                />
-
-                                {/* Final Create Team Button */}
-                            
-                            </Card>
+                        {/* Teams List */}
+                        {loading ? (
+                            <Typography style={{ textAlign: "center", marginTop: "20px" }}>Loading...</Typography>
+                        ) : (
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 ml-10">
+                                {teams.length > 0 ? (
+                                    teams.map((team) => (
+                                        <div key={team.id} className="bg-white shadow overflow-hidden sm:rounded-lg">
+                                            <div className="px-4 py-4 sm:px-4">
+                                                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                                                    {team.name}
+                                                </h3>
+                                            </div>
+                                            <div className="border-t border-gray-200 px-4 py-4 sm:px-4">
+                                                <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+                                                    <div className="sm:col-span-1">
+                                                        <dt className="text-sm font-medium text-gray-500">Team Code</dt>
+                                                        <dd className="mt-1 text-sm text-gray-900">{team.code}</dd>
+                                                    </div>
+                                                    <div className="sm:col-span-1">
+                                                        <dt className="text-sm font-medium text-gray-500">Team Members</dt>
+                                                        <dd className="mt-1 text-sm text-gray-900">{team.students?.length || 0}</dd>
+                                                    </div>
+                                                </dl>
+                                            </div>
+                                            <div className="bg-gray-50 px-4 py-4 sm:px-4">
+                                                <button
+                                                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 rounded-md cursor-pointer"
+                                                    onClick={() => onViewTeam(team)}
+                                                >
+                                                    View Team
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <Typography style={{ textAlign: "center", marginTop: "20px" }}>
+                                        No teams found.
+                                    </Typography>
+                                )}
+                            </div>
                         )}
                     </Grid>
                 </div>

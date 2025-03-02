@@ -13,26 +13,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Student {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  sapid       Int          @unique
-  username    String
-  email       String       @unique
-  password    String
-  pfp         String?
-  desc        String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt()
-  Team        Team?        @relation(fields: [teamId], references: [id])
-  teamId      String?      @db.ObjectId
-  submissions Submission[]
-}
+// model Student {
+//   id          String       @id @default(auto()) @map("_id") @db.ObjectId
+//   sapid       Int          @unique
+//   username    String
+//   email       String       @unique
+//   password    String
+//   pfp         String?
+//   desc        String?
+//   createdAt   DateTime     @default(now())
+//   updatedAt   DateTime     @updatedAt()
+//   Team        Team?        @relation(fields: [teamId], references: [id])
+//   teamId      String?      @db.ObjectId
+//   submissions Submission[]
+// }
 
 model Teacher {
   id                  String               @id @default(auto()) @map("_id") @db.ObjectId
   sapid               Int                  @unique
   username            String
-  email               String               @unique
+  email               String               
   password            String
   pfp                 String?
   desc                String?
@@ -43,17 +43,57 @@ model Teacher {
   questionGenerations QuestionGeneration[]
 }
 
+// model Team {
+//   id          String       @id @default(auto()) @map("_id") @db.ObjectId
+//   name        String
+//   code        String       @unique
+//   students    Student[]
+//   teacher     Teacher      @relation(fields: [teacherId], references: [id])
+//   teacherId   String       @db.ObjectId
+//   createdAt   DateTime     @default(now())
+//   updatedAt   DateTime     @updatedAt()
+//   desc        String?
+//   assignments Assignment[]
+// }
+
+model Student {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  sapid     Int      @unique
+  username  String
+  email     String   
+  password  String
+  pfp       String?
+  desc      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  teams       TeamStudent[] // Many-to-many relation through TeamStudent
+  submissions Submission[]
+}
+
 model Team {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  code        String       @unique
-  students    Student[]
-  teacher     Teacher      @relation(fields: [teacherId], references: [id])
-  teacherId   String       @db.ObjectId
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt()
-  desc        String?
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  code      String   @unique
+  teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  desc      String?
+
+  students    TeamStudent[] // Many-to-many relation through TeamStudent
   assignments Assignment[]
+}
+
+model TeamStudent {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  teamId    String @db.ObjectId
+  studentId String @db.ObjectId
+
+  team    Team    @relation(fields: [teamId], references: [id])
+  student Student @relation(fields: [studentId], references: [id])
+
+  @@unique([teamId, studentId]) // Prevent duplicate student-team entries
 }
 
 model Assignment {
