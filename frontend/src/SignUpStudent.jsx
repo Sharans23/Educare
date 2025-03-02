@@ -66,7 +66,7 @@ function SignUpStudent() {
                             <Typography component="h1" style={{ fontSize: '170%', textAlign: 'center' }}>Sign up</Typography>
                         </div>
 
-                        <Grid container spacing={2} alignItems="center" justifyContent="center">
+                        <Grid container spacing={2} alignItems="center" justifyContent="center" style={{marginLeft:'150px'}}>
                             <Grid item xs={12}>
                                 <Typography sx={{ textAlign: "left" }}>Name</Typography>
                                 <TextField
@@ -75,7 +75,7 @@ function SignUpStudent() {
                                     type="text"
                                     placeholder="Enter name"
                                     onChange={(e) => setUsername(e.target.value)}
-                                    sx={{ width: '60%', padding: '5px' }}
+                                    sx={{ width: '65%', padding: '5px' }}
                                 />
                             </Grid>
 
@@ -129,13 +129,17 @@ function SignUpStudent() {
                         </Grid>
 
                         {/* <Link href="/loginTeacher"> */}
+                        <Grid container display="flex" justifyContent="center" >
+                        <Grid display="flex" justifyContent="center">
                         <Button onClick={handleSignUp} sx={{ backgroundColor: '#ffc700', color: '#000', padding: '10px', paddingLeft: '30px', paddingRight: '30px', mb: 3 }} >Sign up</Button>
-                        {/* </Link> */}
-                        <Typography fontSize="body2" sx={{ alignSelf: 'center' }}>
+                        </Grid>
+
+</Grid>                        {/* </Link> */}
+                        <Typography fontSize="body2" sx={{ textAlign: 'center' }}>
                             Already have an account?
                             <Link href="/loginTeacher" style={{ color: '#000', textDecorationColor: '#ffc700', marginLeft: '10px' }}>Log in</Link>
                         </Typography>
-                        <Typography fontSize="body2" sx={{ alignSelf: 'center' }}>
+                        <Typography fontSize="body2" sx={{ textAlign: 'center' }}>
                             Go back to Home Page
                             <Link href="/" style={{ color: '#000', textDecorationColor: '#ffc700', marginLeft: '10px' }}>Home</Link>
                         </Typography>

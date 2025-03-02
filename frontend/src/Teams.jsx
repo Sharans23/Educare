@@ -85,7 +85,7 @@ function Teams() {
     
 
     return (
-        <div style={{ overflowY: "auto", marginLeft: "-150px", marginTop: "-30px" }}>
+        <div style={{ overflowY: "auto" }}>
             <CardContent style={{ padding: "0px" }}>
                 <div style={{ display: "flex" }}>
                     {/* Sidebar */}
