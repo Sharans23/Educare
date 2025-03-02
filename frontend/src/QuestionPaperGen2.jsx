@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Button, Card, CardContent, Typography, Grid, TextField } from "@mui/material";
+import { Button, Card, CardContent, Typography, Grid, TextField, CircularProgress } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 import EmailContext from "./EmailContext";
@@ -15,43 +15,48 @@ function QuestionPaperGen() {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [generatedQuestions, setGeneratedQuestions] = useState("");
     const [folderName, setFolderName] = useState("");
+    const [loading, setLoading] = useState(false);
+
 
     const { email } = useContext(EmailContext);
 
     const handleUpload = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
-
+    
+        setLoading(true); // Start loading
+    
         const questionGenerationId = localStorage.getItem("questionGenerationId");
         if (!questionGenerationId) {
             Swal.fire("Error", "No questionGenerationId found in local storage.", "error");
+            setLoading(false);
             return;
         }
-
+    
         const formData = new FormData();
         formData.append("documents", file);
         formData.append("questionGenerationId", questionGenerationId);
-
+    
         try {
             const response = await fetch("http://localhost:5000/document/upload", {
                 method: "POST",
                 body: formData,
             });
-
+    
             const result = await response.json();
-
+    
             if (response.ok) {
                 const uploadedFile = {
                     name: file.name,
-                    file, // Store the file object for processing later
+                    file,
                     url: result.documents[0].document,
                     date: new Date().toLocaleDateString(),
                     time: new Date().toLocaleTimeString(),
                     type: file.type,
                 };
-
+    
                 setUploadedFiles([...uploadedFiles, uploadedFile]);
-
+    
                 Swal.fire("Success", "File uploaded successfully!", "success");
             } else {
                 throw new Error(result.message || "Failed to upload file.");
@@ -59,19 +64,24 @@ function QuestionPaperGen() {
         } catch (error) {
             console.error("File upload error:", error);
             Swal.fire("Error", error.message, "error");
+        } finally {
+            setLoading(false); // Stop loading
         }
     };
+    
 
     const generateQuestionPaper = async () => {
         if (uploadedFiles.length === 0) {
             Swal.fire("Error", "No files uploaded. Please upload a file first.", "error");
             return;
         }
-
+    
+        setLoading(true); // Start loading
+    
         try {
             const genAI = new GoogleGenerativeAI(API_KEY);
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
+    
             const prompt = `
                 Analyze this document/image and generate structured questions in JSON format:
                 {
@@ -85,21 +95,21 @@ function QuestionPaperGen() {
                 }
                 If the document or image is not relevant for question generation, return an empty object.
             `;
-
+    
             let allQuestions = [];
-
+    
             for (const fileData of uploadedFiles) {
                 const base64String = await convertToBase64(fileData.file);
-
+    
                 const result = await model.generateContent([
                     { inlineData: { data: base64String, mimeType: fileData.type } },
                     prompt,
                 ]);
-
+    
                 const response = await result.response;
                 const text = response.text();
                 const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-
+    
                 try {
                     const data = JSON.parse(cleanedText);
                     if (data.questions) {
@@ -111,15 +121,18 @@ function QuestionPaperGen() {
                     return;
                 }
             }
-
+    
             setGeneratedQuestions(JSON.stringify({ questions: allQuestions }, null, 2));
-
+    
             Swal.fire("Success", "Question paper generated successfully!", "success");
         } catch (error) {
             console.error("Error generating questions", error);
             Swal.fire("Error", "Failed to generate questions. Try again later.", "error");
+        } finally {
+            setLoading(false); // Stop loading
         }
     };
+    
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -195,6 +208,7 @@ function QuestionPaperGen() {
 </Button>
 
                         </div>
+                        {loading && <CircularProgress style={{ display: "block", margin: "20px auto" }} />}
 
                         {generatedQuestions ? (
                                           <Card style={{ marginTop: "20px", padding: "15px" }}>
