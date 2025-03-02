@@ -21,9 +21,60 @@ function CreateAssgn({ idTeam }) {
     const [submissions, setSubmissions] = useState([]);
     const { email } = useContext(EmailContext);
     const navigate = useNavigate();
+    const handleCreateAssignment = async () => {
+        if (!assignmentName.trim() || !deadline.trim()) {
+            Swal.fire({ text: "Assignment Name and Deadline are required", icon: "error" });
+            return;
+        }
+    
+        const newAssignment = {
+            name: assignmentName,
+            desc: remarks || "",
+            deadline: new Date(deadline).toISOString(),
+            teamId: idTeam // Ensure this value is passed correctly as a prop
+        };
+    
+        // Fetch token from localStorage
+        const token = localStorage.getItem("token");
+    
+        if (!token) {
+            Swal.fire({ text: "User is not authenticated", icon: "error" });
+            return;
+        }
+    
+        try {
+            const response = await fetch("http://localhost:5000/assignment/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` // Attach the token
+                },
+                body: JSON.stringify(newAssignment)
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+                setAssignments([...assignments, data.assignment]);
+                Swal.fire({ text: "Assignment Created Successfully!", icon: "success" });
+            } else {
+                Swal.fire({ text: data.message || "Failed to create assignment", icon: "error" });
+            }
+        } catch (error) {
+            Swal.fire({ text: "Error connecting to the server", icon: "error" });
+            console.error("Error creating assignment:", error);
+        }
+    
+        setOpen(false);
+        setAssignmentName("");
+        setRemarks("");
+        setDeadline("");
+    };
+    
 
     useEffect(() => {
         if (!idTeam) return;
+
 
         const fetchAssignments = async () => {
             try {
@@ -128,9 +179,10 @@ function CreateAssgn({ idTeam }) {
                             </>
                         ) : (
                             <>
-                                <Typography style={{ fontSize: "150%", fontWeight: 700, marginLeft: "30px", marginBottom: "30px", textAlign: 'left' }}>
+                                <Typography style={{ fontSize: "150%", fontWeight: 700, marginLeft: "30px", marginBottom: "30px", textAlign:'left' }}>
                                     Add Assignment
                                 </Typography>
+                                <div style={{display:'flex'}}>
                                 <Button
                                     style={{ backgroundColor: "#ffc700", color: "#000", display: "flex", marginLeft: "40px", marginBottom: "30px", padding: "8px", width: "200px" }}
                                     onClick={() => setOpen(true)}
@@ -139,20 +191,30 @@ function CreateAssgn({ idTeam }) {
                                     <AddIcon />
                                 </Button>
 
+                               
+                               </div>
+                                <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
+                                    <DialogTitle>Create Assignment</DialogTitle>
+                                    <DialogContent>
+                                        <TextField label="Assignment Name" fullWidth value={assignmentName} onChange={(e) => setAssignmentName(e.target.value)} style={{ marginBottom: "15px" }} />
+                                        <TextField label="Remarks (Optional)" fullWidth multiline rows={2} value={remarks} onChange={(e) => setRemarks(e.target.value)} style={{ marginBottom: "15px" }} />
+                                        <TextField label="Deadline" type="datetime-local" fullWidth value={deadline} onChange={(e) => setDeadline(e.target.value)} InputLabelProps={{ shrink: true }} style={{ marginBottom: "15px" }} />
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={() => setOpen(false)}>Cancel</Button>
+                                        <Button variant="contained" color="primary" onClick={handleCreateAssignment}>Create</Button>
+                                    </DialogActions>
+                                </Dialog>
                                 <Typography style={{ textAlign: "left", marginLeft: "50px", marginBottom: "5px", fontWeight: 500 }}>Assignments</Typography>
                                 <Card style={{ marginBottom: "30px", padding: "20px", marginLeft: "40px", marginRight: "40px", borderRadius: "5px" }}>
                                     <TableContainer>
                                         <Table>
                                             <TableBody>
-                                                {assignments.map((assignment) => (
-                                                    <TableRow key={assignment.id}>
+                                                {assignments.map((assignment, index) => (
+                                                    <TableRow key={index}>
                                                         <TableCell>{assignment.id}</TableCell>
                                                         <TableCell>{assignment.name}</TableCell>
-                                                        <TableCell>
-                                                            <Button variant="contained" color="secondary" onClick={() => handleSelectAssignment(assignment)}>
-                                                                Open Assgn
-                                                            </Button>
-                                                        </TableCell>
+                                                        <TableCell><Button variant="contained" color="secondary" onClick={() => setSelectedAssignment(assignment)}>Open Assgn</Button></TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>
