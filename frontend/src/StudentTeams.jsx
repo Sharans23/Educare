@@ -5,6 +5,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 import SideBar from "./SSidebar";
+import { render_url } from "../secrets";
 
 function StudentTeams() {
     const [open, setOpen] = useState(false);
@@ -65,7 +66,7 @@ function StudentTeams() {
                 throw new Error("No authentication token found");
             }
 
-            const response = await fetch("http://localhost:5000/team/student", {
+            const response = await fetch(`${render_url}/team/student`, {
                 method: "GET",
                 headers: { "Authorization": `Bearer ${token}` }
             });
