@@ -3,7 +3,6 @@ import {
     Button, Card, CardContent, Typography, Grid, Dialog, DialogTitle, DialogContent, DialogActions, TextField
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Swal from "sweetalert2";
 import TSideBar from "./TSideBar";
 import SideBar from "./SSideBar";
@@ -21,14 +20,18 @@ function StudentTeams() {
             setError("Team code is required");
             return;
         }
-        const token = localStorage.getItem("token"); // Ensure token is stored in local storage
-        if (!token) throw new Error("No auth token found");
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            Swal.fire("Error", "No authentication token found", "error");
+            return;
+        }
 
         setLoading(true);
         setError("");
 
         try {
-            const response = await fetch("http:localhost:5000/team/join", {
+            const response = await fetch("http://localhost:5000/team/join", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -43,9 +46,10 @@ function StudentTeams() {
                 throw new Error(data.message || "Failed to join the team");
             }
 
-            alert("Successfully joined the team!");
+            Swal.fire("Success", "Successfully joined the team!", "success");
             setOpen(false);
-            setTeamCode(""); // Reset input field
+            setTeamCode("");
+            fetchTeams(); // Refresh team list
         } catch (err) {
             setError(err.message);
         } finally {
@@ -53,38 +57,32 @@ function StudentTeams() {
         }
     };
 
-    // Function to fetch teams from API
+    // Fetch teams from API
     const fetchTeams = async () => {
-        try {
-            const token = localStorage.getItem("token"); // Ensure token is stored in local storage
-            if (!token) throw new Error("No auth token found");
+        setLoading(true);
 
-            const response = await fetch("http:localhost:5000/team/student", {
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                throw new Error("No authentication token found");
+            }
+
+            const response = await fetch("http://localhost:5000/team/student", {
                 method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    // "Content-Type": "application/json"
-                }
+                headers: { "Authorization": `Bearer ${token}` }
             });
 
             if (!response.ok) throw new Error("Failed to fetch teams");
 
             const data = await response.json();
-            console.log(data)
             setTeams(data.teams || []);
         } catch (error) {
-            console.error("Error fetching teams:", error);
-            Swal.fire({
-                icon: "error",
-                title: "Failed to load teams",
-                text: error.message,
-            });
+            Swal.fire("Error", error.message, "error");
         } finally {
             setLoading(false);
         }
     };
 
-    // Fetch teams on component mount
     useEffect(() => {
         fetchTeams();
     }, []);
@@ -134,9 +132,6 @@ function StudentTeams() {
 
                         {/* Join Team Button */}
                         <Button
-                            name="banner"
-                            component="label"
-                            className="buttonText1"
                             style={{
                                 backgroundColor: "#ffc700",
                                 color: "#000",
@@ -212,15 +207,15 @@ function StudentTeams() {
                                                         <dd className="mt-1 text-sm text-gray-900">{team.code}</dd>
                                                     </div>
                                                     <div className="sm:col-span-1">
-                                                        <dt className="text-sm font-medium text-gray-500">Team Members</dt>
-                                                        <dd className="mt-1 text-sm text-gray-900">{team.students?.length || 0}</dd>
+                                                        <dt className="text-sm font-medium text-gray-500">Members</dt>
+                                                        <dd className="mt-1 text-sm text-gray-900">{team.students.length || 0}</dd>
                                                     </div>
                                                 </dl>
                                             </div>
                                             <div className="bg-gray-50 px-4 py-4 sm:px-4">
                                                 <button
                                                     className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 rounded-md cursor-pointer"
-                                                    onClick={() => onViewTeam(team)}
+                                                    onClick={() => Swal.fire("Team Details", `Name: ${team.name}\nCode: ${team.code}\nDescription: ${team.desc}`, "info")}
                                                 >
                                                     View Team
                                                 </button>

@@ -49,7 +49,7 @@ function LoginTeacher() {
 
     return (
         <ThemeProvider theme={fontcolorTheme}>
-            <div style={{ marginLeft: '-150px', marginTop: '-25px' }}>
+            <div>
                 <Box sx={{ display: 'flex', flexDirection: 'row', height: 'auto' }}>
                     {/* Left Container */}
                     <Container sx={{
@@ -98,13 +98,13 @@ function LoginTeacher() {
                             bgcolor: 'white',
                             borderRadius: '16px'
                         }} variant="outlined">
-                            <div sx={{ mb: '10px' }}>
-                                <img src={logo} style={{ width: '220px', marginBottom: '30px' }} alt="Logo" />
+                            <div sx={{ mb: '10px', display:"flex", justifyContent:"center" }}>
+                                <img src={logo} style={{display:"flex", justifyContent:"center", width: '220px', marginBottom: '30px', marginLeft:'290px' }} alt="Logo" />
                                 <Typography component="h1" style={{ fontSize: '170%', textAlign: 'center', marginBottom: '20px' }}>Login</Typography>
                             </div>
 
-                            <Grid container spacing={2} style={{ width: '100%' }}>
-                                <Grid item xs={12} style={{ marginRight: '50px' }}>
+                            <Grid container spacing={2} style={{ width: '100%' }} display="flex" justifyContent="center">
+                                <Grid item xs={12} style={{ marginRight: '50px' }} display="flex" justifyContent="center" >
                                     <FormControl sx={{ mb: '20px' }}>
                                         <Typography sx={{ textAlign: "left" }}>SapID</Typography>
                                         <TextField
@@ -117,7 +117,7 @@ function LoginTeacher() {
                                     </FormControl>
                                 </Grid>
 
-                                <Grid item xs={12} style={{ marginRight: '50px' }}>
+                                <Grid item xs={12} style={{ marginRight: '50px' }} display="flex" justifyContent="center">
                                     <FormControl sx={{ mb: '10px' }}>
                                         <Typography sx={{ textAlign: "left" }}>Password</Typography>
                                         <TextField
@@ -131,15 +131,19 @@ function LoginTeacher() {
                                 </Grid>
                             </Grid>
 
-                            <Button onClick={handleLogin} sx={{ mt: 3, backgroundColor: '#ffc700', color: '#000', padding: '10px', paddingLeft: '30px', paddingRight: '30px', mb: 3 }}>
+                            <Grid container display="flex" justifyContent="center" >
+                                <Grid display="flex" justifyContent="center"> 
+                                    <Button onClick={handleLogin} sx={{ mt: 3, backgroundColor: '#ffc700', color: '#000', padding: '10px', paddingLeft: '30px', paddingRight: '30px', mb: 3, display: 'flex', justifyContent: 'center' }}>
                                 Login
                             </Button>
+                            </Grid>
+                            </Grid>
 
-                            <Typography fontSize="body2" sx={{ alignSelf: 'center' }}>
+                            <Typography fontSize="body2" sx={{ textAlign: 'center' }}>
                                 Don't have an account?
                                 <Link to="/signupTeacher" style={{ color: '#000', textDecorationColor: '#ffc700', marginLeft: '10px' }}>Sign Up</Link>
                             </Typography>
-                            <Typography fontSize="body2" sx={{ alignSelf: 'center' }}>
+                            <Typography fontSize="body2" sx={{ textAlign: 'center' }}>
                                 Go back to Home Page
                                 <Link to="/" style={{ color: '#000', textDecorationColor: '#ffc700', marginLeft: '10px' }}>Home</Link>
                             </Typography>

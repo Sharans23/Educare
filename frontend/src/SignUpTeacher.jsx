@@ -48,7 +48,7 @@ function SignUpTeacher() {
 
     return (
         <ThemeProvider theme={fontcolorTheme}>
-        <div  style={{marginLeft:'-150px', marginTop:'-35px'}}>
+        <div>
         <Box sx={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
             {/* Left Container */}
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '40%', height: '97vh', bgcolor: '#1e1e1e', borderRadius:'15px', margin:'12px' }}>
@@ -58,15 +58,15 @@ function SignUpTeacher() {
             </Container>
 
             {/* Right Container */}
-            <Container sx={{ width: '60%', height: '100%', bgcolor: 'white' }}>
+            <Container sx={{ width: '60%', height: '120%', bgcolor: 'white' }}>
                 <Box sx={{ width: '100%', mx: 'auto', my: 4, py: 3, px: 2, gap: 2, boxShadow: 'md', bgcolor: 'white', borderRadius: '16px' }} variant="outlined">
                     <div sx={{ mb: '10px' }}>
-                        <img src={logo} style={{ width: '220px', marginBottom: '30px' }} alt="Logo" />
+                        <img src={logo} style={{ width: '220px', marginBottom: '30px', marginLeft:'290px' }} alt="Logo" />
                         <Typography component="h1" style={{ fontSize: '170%',textAlign:'center' }}>Sign up</Typography>
                     </div>
 
-                    <Grid container spacing={2} alignItems="center" justifyContent="center">
-                    <Grid item xs={12}>
+                    <Grid container spacing={2} alignItems="center" justifyContent="center" style={{marginLeft:'130px'}}>
+                            <Grid item xs={12}>
                                 <Typography sx={{ textAlign: "left" }}>Name</Typography>
                                 <TextField
                                     name="name"
@@ -74,10 +74,11 @@ function SignUpTeacher() {
                                     type="text"
                                     placeholder="Enter name"
                                     onChange={(e) => setName(e.target.value)}
-                                    sx={{ width: '60%' , padding:'5px'}}
+                                    sx={{ width: '65%' , padding:'5px'}}
                                 />
-                    </Grid>
-                    <Grid item xs={12}>
+                            </Grid>
+
+                            <Grid item xs={12}>
                                 <Typography sx={{ textAlign: "left" }}>Email</Typography>
                                 <TextField
                                     name="email"
@@ -87,8 +88,9 @@ function SignUpTeacher() {
                                     onChange={(e) => setEmail(e.target.value)}
                                     sx={{ width: '65%' , padding:'5px'}}
                                 />
-                    </Grid>
-                    <Grid item xs={12}>
+                            </Grid>
+
+                            <Grid item xs={12}>
                                 <Typography sx={{ textAlign: "left" }}>Password</Typography>
                                 <TextField
                                     name="password"
@@ -98,10 +100,9 @@ function SignUpTeacher() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     sx={{width: '65%' , padding:'5px'}}
                                 />
-                                </Grid>
-             <Grid item xs={12}>
+                            </Grid>
 
-                          
+                            <Grid item xs={12}>
                                 <Typography sx={{ textAlign: "left" }}>SapID</Typography>
                                 <TextField
                                     name="sapid"
@@ -109,20 +110,24 @@ function SignUpTeacher() {
                                     type="number"
                                     placeholder="Enter sap id"
                                     onChange={(e) => setSapid(e.target.value)}
-                                    sx={{ width: '65%' , padding:'5px'}}
+                                    sx={{ width: '65%', padding: '5px' }}
                                 />
-                  
-                  </Grid>
-                  </Grid>
+                            </Grid>
+                        </Grid>
+                              
                         
                     {/* <Link href="/loginTeacher"> */}
+                    <Grid container display="flex" justifyContent="center" >
+                    <Grid display="flex" justifyContent="center">
                         <Button onClick={handleSignUp} sx={{  backgroundColor:'#ffc700', color:'#000', padding:'10px',paddingLeft:'30px',paddingRight:'30px',mb: 3}} >Sign up</Button>
+                    </Grid>
+                    </Grid>
                     {/* </Link> */}
-                    <Typography fontSize="body2" sx={{ alignSelf: 'center' }}>
+                    <Typography fontSize="body2" sx={{ textAlign: 'center' }}>
                         Already have an account?
                         <Link href="/loginTeacher" style={{ color: '#000', textDecorationColor: '#ffc700', marginLeft: '10px' }}>Log in</Link>
                     </Typography>
-                    <Typography fontSize="body2" sx={{ alignSelf: 'center' }}>
+                    <Typography fontSize="body2" sx={{ textAlign: 'center' }}>
                         Go back to Home Page
                         <Link href="/" style={{ color: '#000', textDecorationColor: '#ffc700', marginLeft: '10px' }}>Home</Link>
                     </Typography>
