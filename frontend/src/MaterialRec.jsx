@@ -88,7 +88,7 @@ export default function Recommendations() {
               {recommendations.map((rec, index) => (
                 <div key={index} className="py-1 border-b last:border-0">
                   <p className="text-sm">
-                    {index + 1}. {rec}
+                    {rec}
                   </p>
                 </div>
               ))}

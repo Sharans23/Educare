@@ -8,6 +8,9 @@ import progress from "./images/progress.png";
 import rec from "./images/recomm.png";
 import logo from "./images/logo.png";
 import quiz from "./images/ideas.png";
+import group from './images/group.png'
+import roadmap from './images/roadmap (1).png'
+import answer from './images/presentation-board.png'
 
 function SideBar() {
   const [selectedButton, setSelectedButton] = useState("dashboardstudent");
@@ -126,10 +129,37 @@ function SideBar() {
           </li>
           <li>
             <Button
+              onClick={() => handleButtonClick("StudentTeams", "/StudentTeams")}
+              style={{
+                backgroundColor: "#1e1e1e",
+                color: "#000",
+                width: "80%",
+                padding: "8px",
+                textAlign: "left",
+                marginLeft: "1px",
+                justifyContent: "flex-start",
+                paddingLeft: "5%",
+              }}
+            >
+              <img src={group} style={{ width: "20px", marginTop: "3px" }} />
+              <Typography
+                style={{
+                  fontSize: "110%",
+                  marginLeft: "15px",
+                  textTransform: "none",
+                  color: "#fff",
+                }}
+              >
+                Teams
+              </Typography>
+            </Button>
+          </li>
+          <li>
+            <Button
               onClick={() =>
                 handleButtonClick(
-                  "StudentTeams",
-                  "/StudentTeams"
+                  "scoperecommendations",
+                  "/scoperecommendations"
                 )
               }
               style={{
@@ -143,25 +173,98 @@ function SideBar() {
                 paddingLeft: "5%",
               }}
             >
-              <img src={progress} style={{ width: "20px", marginTop: "3px" }} />
+              <img
+                src={roadmap}
+                style={{ width: "20px", marginTop: "3px" }}
+                alt="Review Icon"
+              />
               <Typography
                 style={{
                   fontSize: "110%",
                   marginLeft: "15px",
+                  textAlign: "left",
                   textTransform: "none",
                   color: "#fff",
                 }}
               >
-           Teams
+                AI Roadmap 
               </Typography>
             </Button>
           </li>
-          {/* <li>
-                        <Button onClick={() => handleButtonClick('scoperecommendations',"/scoperecommendations")} style={{ backgroundColor: '#1e1e1e', color: '#000', width: '80%', padding: '8px', textAlign: 'left', marginLeft: '1px',justifyContent:'flex-start',paddingLeft:'5%' }}>
-                                <img src={quiz} style={{ width: '20px', marginTop: '3px' }} alt="Review Icon" />
-                                <Typography style={{ fontSize: '110%', marginLeft: '15px', textAlign: 'left',textTransform: 'none',color:'#fff' }}>Scope Recommendations</Typography>
-                        </Button>
-                    </li> */}
+          <li>
+            <Button
+              onClick={() =>
+                handleButtonClick(
+                  "space",
+                  "/space"
+                )
+              }
+              style={{
+                backgroundColor: "#1e1e1e",
+                color: "#000",
+                width: "80%",
+                padding: "8px",
+                textAlign: "left",
+                marginLeft: "1px",
+                justifyContent: "flex-start",
+                paddingLeft: "5%",
+              }}
+            >
+              <img
+                src={roadmap}
+                style={{ width: "20px", marginTop: "3px" }}
+                alt="Review Icon"
+              />
+              <Typography
+                style={{
+                  fontSize: "110%",
+                  marginLeft: "15px",
+                  textAlign: "left",
+                  textTransform: "none",
+                  color: "#fff",
+                }}
+              >
+                Game based learning
+              </Typography>
+            </Button>
+          </li>
+          <li>
+            <Button
+              onClick={() =>
+                handleButtonClick(
+                  "Answer paper analyser",
+                  "/qa"
+                )
+              }
+              style={{
+                backgroundColor: "#1e1e1e",
+                color: "#000",
+                width: "80%",
+                padding: "8px",
+                textAlign: "left",
+                marginLeft: "1px",
+                justifyContent: "flex-start",
+                paddingLeft: "5%",
+              }}
+            >
+              <img
+                src={answer}
+                style={{ width: "20px", marginTop: "3px" }}
+                alt="Review Icon"
+              />
+              <Typography
+                style={{
+                  fontSize: "110%",
+                  marginLeft: "15px",
+                  textAlign: "left",
+                  textTransform: "none",
+                  color: "#fff",
+                }}
+              >
+                Answer paper analyser
+              </Typography>
+            </Button>
+          </li>
         </ul>
       </nav>
     </div>

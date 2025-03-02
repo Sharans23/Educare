@@ -49,7 +49,7 @@ function LoginTeacher() {
 
     return (
         <ThemeProvider theme={fontcolorTheme}>
-            <div style={{ marginLeft: '-150px', marginTop: '-25px' }}>
+            <div >
                 <Box sx={{ display: 'flex', flexDirection: 'row', height: 'auto' }}>
                     {/* Left Container */}
                     <Container sx={{

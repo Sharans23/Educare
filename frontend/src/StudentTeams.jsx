@@ -5,7 +5,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Swal from "sweetalert2";
-import SideBar from "./SSidebar";
+import SideBar from "./SSideBar";
 
 function StudentTeams() {
     const [open, setOpen] = useState(false);
@@ -88,7 +88,7 @@ function StudentTeams() {
     }, []);
 
     return (
-        <div style={{ overflowY: "auto", marginLeft: "-150px", marginTop: "-30px" }}>
+        <div style={{ overflowY: "auto"}}>
             <CardContent style={{ padding: "0px" }}>
                 <div style={{ display: "flex" }}>
                     {/* Sidebar */}
