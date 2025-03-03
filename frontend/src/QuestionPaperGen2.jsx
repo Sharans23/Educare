@@ -38,10 +38,13 @@ function QuestionPaperGen() {
         formData.append("questionGenerationId", questionGenerationId);
     
         try {
-            const response = await fetch("http://localhost:5000/document/upload", {
+            const response = await fetch(
+              "https://educare-nbpr.onrender.com/document/upload",
+              {
                 method: "POST",
                 body: formData,
-            });
+              }
+            );
     
             const result = await response.json();
     

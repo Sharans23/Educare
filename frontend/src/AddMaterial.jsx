@@ -25,11 +25,15 @@ function AddMaterial() {
                 const formData = new FormData();
                 formData.append('pdf', file);
               
-                await axios.post(`http://localhost:5000/teacher/uploadDoc/${email}`, formData, {
+                await axios.post(
+                  `https://educare-nbpr.onrender.com/teacher/uploadDoc/${email}`,
+                  formData,
+                  {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
+                      "Content-Type": "multipart/form-data",
+                    },
+                  }
+                );
                 setUploadedFiles([...uploadedFiles, newFile]);
                 Swal.fire({
                     text: "File Uploaded",

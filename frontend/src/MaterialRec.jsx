@@ -7,11 +7,6 @@ import Grid from '@mui/material/Grid';
 import { gemini_api } from '../secrets.js';
 import SideBar from "./SSidebar.jsx";
 
-
-
-console.log(gemini_api)
-
-
 const genAI = new GoogleGenerativeAI(gemini_api);
 
 async function generateContent(prompt) {

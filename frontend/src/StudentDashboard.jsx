@@ -24,19 +24,20 @@ function StudentDashboard() {
                 }
         //   if (username) {
               // Fetch profile data from the server using the username
-              axios.get('http://localhost:5000/student/me',{
-                headers: {
-                    "Authorization": `Bearer ${token}`,
+              axios
+                .get("https://educare-nbpr.onrender.com/student/me", {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
                     // "Content-Type": "application/json",
-                },
-              })
-                  .then(response => {
-                      // Update state with fetched profile data
-                      setStudentData(response.data);
-                  })
-                  .catch(error => {
-                      console.error('Error fetching profile data:', error);
-                  });
+                  },
+                })
+                .then((response) => {
+                  // Update state with fetched profile data
+                  setStudentData(response.data);
+                })
+                .catch((error) => {
+                  console.error("Error fetching profile data:", error);
+                });
         //   }
       }, []);
 

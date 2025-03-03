@@ -24,11 +24,15 @@ function LoginTeacher() {
         };
 
         try {
-            const response = await axios.post("http://localhost:5000/teacher/login", signInData, {
+            const response = await axios.post(
+              "https://educare-nbpr.onrender.com/teacher/login",
+              signInData,
+              {
                 headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+                  "Content-Type": "application/json",
+                },
+              }
+            );
 
             console.log("Signin Successful:", response.data);
 

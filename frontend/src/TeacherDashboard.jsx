@@ -24,19 +24,20 @@ function TeacherDashboard() {
         // console.log("emailll:" ,email);
         //   if (email) {
               // Fetch profile data from the server using the email
-              axios.get(`http://localhost:5000/teacher/me`,{
-                headers: {
-                    "Authorization": `Bearer ${token}`,
+              axios
+                .get(`https://educare-nbpr.onrender.com/teacher/me`, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
-                },
-              })
-                  .then(response => {
-                      // Update state with fetched profile data
-                      setProfileData(response.data);
-                  })
-                  .catch(error => {
-                      console.error('Error fetching profile data:', error);
-                  });
+                  },
+                })
+                .then((response) => {
+                  // Update state with fetched profile data
+                  setProfileData(response.data);
+                })
+                .catch((error) => {
+                  console.error("Error fetching profile data:", error);
+                });
         //   }
       }, []);
 

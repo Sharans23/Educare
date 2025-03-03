@@ -23,7 +23,9 @@ function AddStudents() {
         const username = result.value;
         console.log(username)
         try {
-          const response = await fetch(`http://localhost:5000/user/my/${username}`);
+          const response = await fetch(
+            `https://educare-nbpr.onrender.com/user/my/${username}`
+          );
           if (response.ok) {
             const studentData = await response.json();
             setStudents(prevStudents => [...prevStudents, studentData]);

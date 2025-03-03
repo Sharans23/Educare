@@ -49,9 +49,12 @@ function QuestionPaperGenerator() {
 
   const fetchQuestionPapers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/questionGeneration/teacher", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const response = await axios.get(
+        "https://educare-nbpr.onrender.com/questionGeneration/teacher",
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       setQuestionPapers(response.data || []);
     } catch (error) {
       console.error("Error fetching question papers:", error);
@@ -66,9 +69,11 @@ function QuestionPaperGenerator() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/questionGeneration/create",
+        "https://educare-nbpr.onrender.com/questionGeneration/create",
         { name: folderName },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       );
 
       console.log("API Response:", response.data); // Debugging

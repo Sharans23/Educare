@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import { serversecret, videoapi } from '../secrets';
 
 
 function randomID(len) {
@@ -26,8 +27,8 @@ export default function App() {
       const roomID = getUrlParams().get('roomID') || randomID(5);
       let myMeeting = async (element) => {
      // generate Kit Token
-      const appID = 1901881364;
-      const serverSecret = "baca8a1d668263b7523ebb4c3b8d7325";
+      const appID = videoapi;
+      const serverSecret = serversecret;
       const kitToken =  ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID,  randomID(5),  randomID(5));
 
     
