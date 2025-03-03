@@ -275,8 +275,8 @@ const AnswerEvaluator = () => {
           <SideBar />
         </Grid>
       </Card>
-      <div className="p-4 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold mb-4">
+      <div className="p-4 max-w-4xl ">
+        <h2 className="text-3xl font-bold mb-4 mt-3">
           Answer Sheet Evaluation System
         </h2>
 
@@ -324,7 +324,7 @@ const AnswerEvaluator = () => {
         {/* Evaluate Answers Button */}
         <div className="mb-6">
           <button
-            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg"
+           className="bg-[#ffc700]  text-black px-4 py-2 rounded-lg"
             onClick={evaluateAnswers}
             disabled={isLoading || !answerKeyText || !studentText}
             style={{
