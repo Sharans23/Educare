@@ -137,15 +137,20 @@ export default function Dashboard() {
           <nav className="flex space-x-4 mb-4">
             {["Overview", "Teams", "Performance"].map((tab) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab.toLowerCase())}
-                className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === tab.toLowerCase()
-                    ? "bg-blue-500 text-white"
-                    : "text-gray-700 hover:bg-gray-200"
-                  }`}
-              >
-                {tab}
-              </button>
+              key={tab}
+              onClick={() => setActiveTab(tab.toLowerCase())}
+              className={`px-3 py-2 rounded-md text-sm font-medium ${
+                activeTab === tab.toLowerCase()
+                  ? "text-white"
+                  : "text-gray-700 hover:bg-gray-200"
+              }`}
+              style={{
+                backgroundColor: activeTab === tab.toLowerCase() ? "#ffc700" : "transparent",
+              }}
+            >
+              {tab}
+            </button>
+            
             ))}
           </nav>
 

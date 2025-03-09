@@ -41,6 +41,7 @@ function QuestionPaperGenerator() {
   const [folderName, setFolderName] = useState("");
   const [questionPapers, setQuestionPapers] = useState([]);
   const [selectedFolder, setSelectedFolder] = useState(null);
+  const VITE_API_URL=import.meta.env.VITE_API_URL
 
   // Fetch question papers on mount
   useEffect(() => {
@@ -49,7 +50,7 @@ function QuestionPaperGenerator() {
 
   const fetchQuestionPapers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/questionGeneration/teacher", {
+      const response = await axios.get(`${VITE_API_URL}/questionGeneration/teacher`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setQuestionPapers(response.data || []);
@@ -66,7 +67,7 @@ function QuestionPaperGenerator() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/questionGeneration/create",
+        `${VITE_API_URL}/questionGeneration/create`,
         { name: folderName },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );

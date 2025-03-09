@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import pdfToText from "react-pdftotext";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { gemini_api } from "../secrets.js";
+// import { gemini_api } from "../secrets.js";
 import SideBar from "./SSidebar.jsx";
 import {
   TextField,
@@ -13,13 +13,15 @@ import {
 import Grid from "@mui/material/Grid";
 
 const AnswerEvaluator = () => {
+  const VITE_API_KEY=import.meta.env.VITE_API_KEY
+console.log(VITE_API_KEY)
   const [answerKeyText, setAnswerKeyText] = useState("");
   const [studentText, setStudentText] = useState("");
   const [gradingResults, setGradingResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const genAI = new GoogleGenerativeAI(gemini_api);
+  const genAI = new GoogleGenerativeAI(VITE_API_KEY);
 
   // Function to handle PDF file upload
   const handleFileUpload = (event, type) => {

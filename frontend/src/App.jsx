@@ -32,7 +32,7 @@ import Teams from "./Teams";
 import CreateAssgn from "./CreateAssgn";
 import AnswerEvaluator from "./QuestionAnswer";
 // import Space from './Space.jsx'
-// import Space from './Space.jsx'
+import Space from './Space.jsx'
 
 // Context Providers
 import { EmailProvider } from "./EmailContext";
@@ -93,7 +93,7 @@ function App() {
                 />
                 <Route
                   path="/StudentTeams"
-                  element={<StudentTeams />}
+                  element={<Dashboard />}
                 />
                 <Route
                   path="/QuestionPaperGen2"

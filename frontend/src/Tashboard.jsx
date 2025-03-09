@@ -95,7 +95,7 @@ export default function Tashboard() {
     useEffect(() => {
       const token = localStorage.getItem("token"); // Retrieve token from localStorage
     
-      fetch("http://localhost:5000/team/teacher", {
+      fetch("https://educare-nbpr.onrender.com/team/teacher", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

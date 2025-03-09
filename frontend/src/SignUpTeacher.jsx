@@ -28,7 +28,7 @@ function SignUpTeacher() {
         };
     
         try {
-            const response = await axios.post("http://localhost:5000/teacher/register", signUpData, {
+            const response = await axios.post("https://educare-nbpr.onrender.com/teacher/register", signUpData, {
                 headers: {
                     "Content-Type": "application/json"
                 }

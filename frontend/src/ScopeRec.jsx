@@ -8,7 +8,8 @@ import { gemini_api } from "../secrets.js";
 import SideBar from "./SSidebar.jsx";
 import { TreeVisualization } from "./TreeVisualization.jsx";
 
-const genAI = new GoogleGenerativeAI(gemini_api);
+const VITE_API_KEY = import.meta.env.VITE_API_KEY;
+const genAI = new GoogleGenerativeAI(VITE_API_KEY);
 
 async function generateContent(prompt) {
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });

@@ -30,7 +30,7 @@ function StudentTeams() {
         setError("");
 
         try {
-            const response = await fetch("http://localhost:5000/team/join", {
+            const response = await fetch("https://educare-nbpr.onrender.com/team/join", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,

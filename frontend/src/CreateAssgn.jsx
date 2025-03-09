@@ -43,7 +43,7 @@ function CreateAssgn({ idTeam }) {
         }
     
         try {
-            const response = await fetch("http://localhost:5000/assignment/create", {
+            const response = await fetch("https://educare-nbpr.onrender.com/assignment/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,7 +78,7 @@ function CreateAssgn({ idTeam }) {
 
         const fetchAssignments = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/assignment/team/${idTeam}`);
+                const response = await fetch(`https://educare-nbpr.onrender.com/assignment/team/${idTeam}`);
                 const data = await response.json();
                 if (response.ok) {
                     setAssignments(data);

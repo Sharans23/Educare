@@ -4,15 +4,16 @@ import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { TextField, Button, Card, CardContent, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { gemini_api } from '../secrets.js';
 import SideBar from "./SSidebar.jsx";
 
 
 
-console.log(gemini_api)
+
+const VITE_API_KEY=import.meta.env.VITE_API_KEY
+console.log(VITE_API_KEY)
 
 
-const genAI = new GoogleGenerativeAI(gemini_api);
+const genAI = new GoogleGenerativeAI(VITE_API_KEY);
 
 async function generateContent(prompt) {
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });

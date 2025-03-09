@@ -14,6 +14,7 @@ function LoginTeacher() {
     const [password, setPassword] = useState('');
     const [sapid, setSapid] = useState('');
     const navigate = useNavigate();
+    const VITE_API_URL=import.meta.env.VITE_API_URL
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -24,7 +25,7 @@ function LoginTeacher() {
         };
 
         try {
-            const response = await axios.post("http://localhost:5000/teacher/login", signInData, {
+            const response = await axios.post(`${VITE_API_URL}/teacher/login`, signInData, {
                 headers: {
                     "Content-Type": "application/json"
                 }

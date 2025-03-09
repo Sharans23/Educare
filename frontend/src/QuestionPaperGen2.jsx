@@ -8,9 +8,13 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { gemini_api } from '../secrets.js';
 import { useNavigate } from "react-router-dom";
 
-const API_KEY = gemini_api;
+
+
 
 function QuestionPaperGen() {
+    const VITE_API_KEY = import.meta.env.VITE_API_KEY;
+    const VITE_API_URL=import.meta.env.VITE_API_URL;
+
     const navigate = useNavigate();
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [generatedQuestions, setGeneratedQuestions] = useState("");
@@ -38,7 +42,7 @@ function QuestionPaperGen() {
         formData.append("questionGenerationId", questionGenerationId);
     
         try {
-            const response = await fetch("http://localhost:5000/document/upload", {
+            const response = await fetch(`${VITE_API_URL}/document/upload`, {
                 method: "POST",
                 body: formData,
             });
@@ -79,7 +83,7 @@ function QuestionPaperGen() {
         setLoading(true); // Start loading
     
         try {
-            const genAI = new GoogleGenerativeAI(API_KEY);
+            const genAI = new GoogleGenerativeAI(VITE_API_KEY);
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
             const prompt = `
@@ -180,7 +184,7 @@ function QuestionPaperGen() {
                 return;
             }
 
-            const response = await fetch(`http://localhost:5000/questionGeneration/output/${questionGenerationId}`, {
+            const response = await fetch(`${VITE_API_URL}/questionGeneration/output/${questionGenerationId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

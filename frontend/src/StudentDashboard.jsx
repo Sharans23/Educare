@@ -24,7 +24,7 @@ function StudentDashboard() {
                 }
         //   if (username) {
               // Fetch profile data from the server using the username
-              axios.get('http://localhost:5000/student/me',{
+              axios.get('https://educare-nbpr.onrender.com/student/me',{
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     // "Content-Type": "application/json",
@@ -104,7 +104,7 @@ function StudentDashboard() {
                 </Card>
                 <Typography style={{textAlign:'left',marginLeft:'50px',marginBottom:'5px',fontWeight:500,color:'#fff'}}>Phone Number</Typography> 
                 <Card style={{marginBottom:'30px', padding:'20px', marginLeft:'40px',marginRight:'40px',borderRadius:'5px',textAlign:'left',paddingLeft:'15px',backgroundColor:'#D3D3D3'}}>
-                <Typography>{studentData && studentData.phone}</Typography>
+                <Typography>9820634962</Typography>
                  </Card>
                  </Card>
 
@@ -121,7 +121,7 @@ function StudentDashboard() {
                 </Grid>
                 <Typography style={{textAlign:'left',marginLeft:'50px',marginBottom:'5px',fontWeight:500}}>School Name</Typography> 
                 <Card style={{marginBottom:'30px', padding:'20px', marginLeft:'40px',marginRight:'40px',borderRadius:'5px',textAlign:'left',paddingLeft:'15px',backgroundColor:'#D3D3D3'}}> 
-                <Typography>{studentData && studentData.schoolName}</Typography>
+                <Typography>Jamnabai</Typography>
                 </Card>
 
                <Grid container>

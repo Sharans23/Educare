@@ -24,7 +24,7 @@ function TeacherDashboard() {
         // console.log("emailll:" ,email);
         //   if (email) {
               // Fetch profile data from the server using the email
-              axios.get(`http://localhost:5000/teacher/me`,{
+              axios.get(`https://educare-nbpr.onrender.com/teacher/me`,{
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
