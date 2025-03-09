@@ -31,9 +31,10 @@ function LoginStudent() {
         try {
             const response = await axios.post("https://educare-nbpr.onrender.com/student/login", loginData, {
                 headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+                  "Content-Type": "application/json",
+                },
+              }
+            );
 
             console.log("Login Successful:", response.data);
 

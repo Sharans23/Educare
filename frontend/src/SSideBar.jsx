@@ -17,6 +17,19 @@ function SideBar() {
   const [selectedButton, setSelectedButton] = useState("dashboardstudent");
   const navigate = useNavigate();
 
+  const [isDyslexic, setIsDyslexic] = useState(false);
+  
+  const toggleFont = () => {
+    if (isDyslexic) {
+      document.body.classList.remove("dyslexic-mode");
+      console.log("Removed dyslexic-mode class");
+    } else {
+      document.body.classList.add("dyslexic-mode");
+      console.log("Added dyslexic-mode class");
+    }
+    setIsDyslexic(!isDyslexic);
+  };
+
   const handleButtonClick = (buttonname, path) => {
     setSelectedButton(buttonname);
     navigate(path);
@@ -272,6 +285,13 @@ function SideBar() {
                                 <Typography style={{ fontSize: '110%', marginLeft: '15px', textAlign: 'left',textTransform: 'none',color:'#fff' }}>Join Meet</Typography>
                         </Button>
                     </li>
+                    <button
+      className="bg-blue-500 text-white p-2 rounded shadow-md"
+      onClick={toggleFont}
+      style={{ cursor: "pointer", margin: "10px" }}
+    >
+      {isDyslexic ? "Disable Dyslexic Font" : "Enable Dyslexic Font"}
+    </button>
         </ul>
       </nav>
     </div>

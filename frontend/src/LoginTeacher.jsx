@@ -27,9 +27,10 @@ function LoginTeacher() {
         try {
             const response = await axios.post(`${VITE_API_URL}/teacher/login`, signInData, {
                 headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+                  "Content-Type": "application/json",
+                },
+              }
+            );
 
             console.log("Signin Successful:", response.data);
 

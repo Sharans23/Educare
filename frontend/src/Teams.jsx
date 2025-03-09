@@ -53,10 +53,11 @@ function Teams() {
             const token = localStorage.getItem("token"); // Get token from local storage if needed
             const response = await axios.post(`https://educare-nbpr.onrender.com/team/create`, teamData, {
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`, 
-                }
-            });
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
 
             console.log(teamData);
     

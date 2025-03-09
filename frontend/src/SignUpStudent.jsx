@@ -32,9 +32,10 @@ function SignUpStudent() {
         try {
             const response = await axios.post("https://educare-nbpr.onrender.com/student/register", signUpData, {
                 headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+                  "Content-Type": "application/json",
+                },
+              }
+            );
 
             console.log("Signup Successful:", response.data);
 

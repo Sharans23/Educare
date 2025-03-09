@@ -28,15 +28,15 @@ function TeacherDashboard() {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
-                },
-              })
-                  .then(response => {
-                      // Update state with fetched profile data
-                      setProfileData(response.data);
-                  })
-                  .catch(error => {
-                      console.error('Error fetching profile data:', error);
-                  });
+                  },
+                })
+                .then((response) => {
+                  // Update state with fetched profile data
+                  setProfileData(response.data);
+                })
+                .catch((error) => {
+                  console.error("Error fetching profile data:", error);
+                });
         //   }
       }, []);
 

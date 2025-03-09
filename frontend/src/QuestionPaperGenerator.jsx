@@ -69,7 +69,9 @@ function QuestionPaperGenerator() {
       const response = await axios.post(
         `${VITE_API_URL}/questionGeneration/create`,
         { name: folderName },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       );
 
       console.log("API Response:", response.data); // Debugging

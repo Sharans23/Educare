@@ -33,11 +33,12 @@ function StudentTeams() {
             const response = await fetch("https://educare-nbpr.onrender.com/team/join", {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ code: teamCode }),
-            });
+              }
+            );
 
             const data = await response.json();
 

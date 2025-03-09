@@ -27,12 +27,12 @@ function SignUpTeacher() {
             password: password
         };
     
-        try {
-            const response = await axios.post("https://educare-nbpr.onrender.com/teacher/register", signUpData, {
+        try {    const response = await axios.post("https://educare-nbpr.onrender.com/teacher/register", signUpData, {
                 headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+                  "Content-Type": "application/json",
+                },
+              }
+            );
     
             console.log("Signup Successful:", response.data);
     

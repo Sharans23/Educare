@@ -91,8 +91,8 @@ export default function ScopeRec() {
         </Grid>
       </Card>
       <div className="flex-1 p-6">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold mb-6 text-gray-800">
+        <div className="max-w-4xl">
+          <h1 className="text-3xl font-bold mb-6 text-gray-800">
             Learning Path Generator
           </h1>
 

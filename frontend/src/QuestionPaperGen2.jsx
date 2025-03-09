@@ -45,7 +45,8 @@ function QuestionPaperGen() {
             const response = await fetch(`${VITE_API_URL}/document/upload`, {
                 method: "POST",
                 body: formData,
-            });
+              }
+            );
     
             const result = await response.json();
     

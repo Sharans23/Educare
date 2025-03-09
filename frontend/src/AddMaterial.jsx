@@ -27,9 +27,10 @@ function AddMaterial() {
               
                 await axios.post(`https://educare-nbpr.onrender.com/teacher/uploadDoc/${email}`, formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
+                      "Content-Type": "multipart/form-data",
+                    },
+                  }
+                );
                 setUploadedFiles([...uploadedFiles, newFile]);
                 Swal.fire({
                     text: "File Uploaded",
