@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Card, Grid } from "@mui/material";
 import { Search } from "lucide-react";
 import { gemini_api } from "../secrets.js";
-import SideBar from "./SSidebar.jsx";
+import SideBar from "./SSideBar.jsx";
 import { TreeVisualization } from "./TreeVisualization.jsx";
 
 const VITE_API_KEY = import.meta.env.VITE_API_KEY;

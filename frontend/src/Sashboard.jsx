@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   BarChart,
@@ -21,7 +22,7 @@ import {
   BellIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import SideBar from "./SSidebar";
+import SideBar from "./SSideBar";
 import {
   TextField,
   Button,

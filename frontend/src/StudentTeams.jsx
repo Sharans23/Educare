@@ -4,7 +4,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
-import SideBar from "./SSidebar";
+import SideBar from "./SSideBar";
 import { render_url } from "../secrets";
 
 function StudentTeams() {

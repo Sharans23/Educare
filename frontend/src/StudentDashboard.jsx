@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid';
-import SideBar from "./SSidebar";
+import SideBar from "./SSideBar";
 import camera from "./images/camera.png";
 import axios from "axios";
 import UsernameContext from './UsernameContext';

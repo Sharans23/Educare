@@ -4,7 +4,7 @@ import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { TextField, Button, Card, CardContent, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import SideBar from "./SSidebar.jsx";
+import SideBar from "./SSideBar.jsx";
 
 
 
