@@ -138,7 +138,7 @@ function SignUpStudent() {
 </Grid>                        {/* </Link> */}
                         <Typography fontSize="body2" sx={{ textAlign: 'center' }}>
                             Already have an account?
-                            <Link href="/loginTeacher" style={{ color: '#000', textDecorationColor: '#ffc700', marginLeft: '10px' }}>Log in</Link>
+                            <Link href="/loginStudent" style={{ color: '#000', textDecorationColor: '#ffc700', marginLeft: '10px' }}>Log in</Link>
                         </Typography>
                         <Typography fontSize="body2" sx={{ textAlign: 'center' }}>
                             Go back to Home Page
